@@ -1,5 +1,5 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
+import React from "react";
+import CIcon from "@coreui/icons-react";
 import {
   // cilBell,
   // cilCalculator,
@@ -14,92 +14,92 @@ import {
   cilSpeedometer,
   //cilStar,
   cilUser,
-} from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+} from "@coreui/icons";
+import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
 const _nav = [
   {
     component: CNavItem,
-    name: 'Dashboard',
-    to: '/dashboard',
+    name: "Dashboard",
+    to: "/dashboard",
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
   },
   {
     component: CNavGroup,
-    name: 'Masters',
-    to: '/buttons',
+    name: "Masters",
+    to: "/buttons",
     icon: <CIcon icon={cilLaptop} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Peserta',
-        to: '/buttons/buttons',
+        name: "Peserta",
+        to: "/buttons/buttons",
       },
       {
         component: CNavItem,
-        name: 'Penguji',
-        to: '/buttons/button-groups',
+        name: "Penguji",
+        to: "/buttons/button-groups",
       },
     ],
   },
   {
     component: CNavGroup,
-    name: 'Fit & Proper',
+    name: "Fit & Proper",
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
-        name: 'Pendaftaran Fit & Proper',
-        to: '/forms/input-group',
+        name: "Pendaftaran Fit & Proper",
+        to: "/forms/input-group",
       },
       {
         component: CNavItem,
-        name: 'Pendaftaran Wawancara',
-        to: '/forms/select',
+        name: "Pendaftaran Wawancara",
+        to: "/forms/select",
       },
       {
         component: CNavItem,
-        name: 'Penilaian Fit & Proper',
-        to: '/forms/checks-radios',
+        name: "Penilaian Fit & Proper",
+        to: "/forms/checks-radios",
       },
       {
         component: CNavItem,
-        name: 'Penilaian Wawancara',
-        to: '/forms/range',
+        name: "Penilaian Wawancara",
+        to: "/forms/range",
       },
       {
         component: CNavItem,
-        name: 'Floating Labels',
-        to: '/forms/floating-labels',
+        name: "Floating Labels",
+        to: "/forms/floating-labels",
       },
       {
         component: CNavItem,
-        name: 'Layout',
-        to: '/forms/layout',
+        name: "Layout",
+        to: "/forms/layout",
       },
       {
         component: CNavItem,
-        name: 'Validation',
-        to: '/forms/validation',
+        name: "Validation",
+        to: "/forms/validation",
       },
     ],
   },
   {
     component: CNavItem,
-    name: 'Report',
-    to: '/charts',
+    name: "Report",
+    to: "/charts",
     icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Pencarian Fit & Proper',
-    to: '/charts',
+    name: "Pencarian Fit & Proper",
+    to: "/charts",
     icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Administrasi User',
-    to: '/charts',
+    name: "Administrasi User",
+    to: "/charts",
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
   // {
@@ -196,6 +196,6 @@ const _nav = [
   //     },
   //   ],
   // },
-]
+];
 
-export default _nav
+export default _nav;
