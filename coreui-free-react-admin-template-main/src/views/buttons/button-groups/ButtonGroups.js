@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import * as api from '../../../api';
 import {
   CAvatar,
   // CButton,
@@ -43,113 +44,51 @@ import {
   // cilUserFemale,
 } from "@coreui/icons";
 
-import avatar1 from "src/assets/images/avatars/1.jpg";
-import avatar2 from "src/assets/images/avatars/2.jpg";
-import avatar3 from "src/assets/images/avatars/3.jpg";
-import avatar4 from "src/assets/images/avatars/4.jpg";
-import avatar5 from "src/assets/images/avatars/5.jpg";
-import avatar6 from "src/assets/images/avatars/6.jpg";
 
 const ButtonGroups = () => {
-  const tableExample = [
-    {
-      avatar: { src: avatar1, status: "success" },
-      user: {
-        name: "Yiorgos Avraamu",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "USA", flag: cifUs },
-      usage: {
-        value: 50,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "success",
-      },
-      payment: { name: "Mastercard", icon: cibCcMastercard },
-      activity: "10 sec ago",
-    },
-    {
-      avatar: { src: avatar2, status: "danger" },
-      user: {
-        name: "Avram Tarasios",
-        new: false,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Brazil", flag: cifBr },
-      usage: {
-        value: 22,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "info",
-      },
-      payment: { name: "Visa", icon: cibCcVisa },
-      activity: "5 minutes ago",
-    },
-    {
-      avatar: { src: avatar3, status: "warning" },
-      user: { name: "Quintin Ed", new: true, registered: "Jan 1, 2021" },
-      country: { name: "India", flag: cifIn },
-      usage: {
-        value: 74,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "warning",
-      },
-      payment: { name: "Stripe", icon: cibCcStripe },
-      activity: "1 hour ago",
-    },
-    {
-      avatar: { src: avatar4, status: "secondary" },
-      user: { name: "Enéas Kwadwo", new: true, registered: "Jan 1, 2021" },
-      country: { name: "France", flag: cifFr },
-      usage: {
-        value: 98,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "danger",
-      },
-      payment: { name: "PayPal", icon: cibCcPaypal },
-      activity: "Last month",
-    },
-    {
-      avatar: { src: avatar5, status: "success" },
-      user: {
-        name: "Agapetus Tadeáš",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Spain", flag: cifEs },
-      usage: {
-        value: 22,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "primary",
-      },
-      payment: { name: "Google Wallet", icon: cibCcApplePay },
-      activity: "Last week",
-    },
-    {
-      avatar: { src: avatar6, status: "danger" },
-      user: {
-        name: "Friderik Dávid",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Poland", flag: cifPl },
-      usage: {
-        value: 43,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "success",
-      },
-      payment: { name: "Amex", icon: cibCcAmex },
-      activity: "Last week",
-    },
-  ];
+  // const tableExample = [
+  //   {
+  //     avatar: { src: avatar1, status: "success" },
+  //     user: {
+  //       name: "Yiorgos Avraamu",
+  //       new: true,
+  //       registered: "Jan 1, 2021",
+  //     },
+  //     country: { name: "USA", flag: cifUs },
+  //     usage: {
+  //       value: 50,
+  //       period: "Jun 11, 2021 - Jul 10, 2021",
+  //       color: "success",
+  //     },
+  //     payment: { name: "Mastercard", icon: cibCcMastercard },
+  //     activity: "10 sec ago",
+  //   },
+  //   {
+  //     avatar: { src: avatar2, status: "danger" },
+  //     user: {
+  //       name: "Avram Tarasios",
+  //       new: false,
+  //       registered: "Jan 1, 2021",
+  //     },
+  //     country: { name: "Brazil", flag: cifBr },
+  //     usage: {
+  //       value: 22,
+  //       period: "Jun 11, 2021 - Jul 10, 2021",
+  //       color: "info",
+  //     },
+  //     payment: { name: "Visa", icon: cibCcVisa },
+  //     activity: "5 minutes ago",
+  //   },
+  // ];
 
   const [peserta, setPeserta] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('http://520f-103-209-131-27.ap.ngrok.io/api/pegawais?populate=*');
-      console.log(result.data.data);
+      const result = await api.readPenguji();
       const arr = result.data.data;
-      setPeserta(arr);
+    console.log(arr)
+     setPeserta(arr);
     };
     fetchData();
   }, []);
@@ -165,7 +104,7 @@ const ButtonGroups = () => {
                 <CTableHead color="light">
                   <CTableRow>
                     <CTableHeaderCell className="text-center">
-                      <CIcon icon={cilPeople} />
+                      No
                     </CTableHeaderCell>
                     <CTableHeaderCell>Nama</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
@@ -179,8 +118,8 @@ const ButtonGroups = () => {
                     <CTableHeaderCell>Edit</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
-                <CTableBody>
-                  {peserta.map((item, index) => (
+                {/* <CTableBody> */}
+                  {/* {peserta.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       <CTableDataCell className="text-center">
                         <CAvatar
@@ -231,7 +170,7 @@ const ButtonGroups = () => {
                       </CTableDataCell>
                     </CTableRow>
                   ))}
-                </CTableBody>
+                </CTableBody> */}
               </CTable>
             </CCardBody>
           </CCard>
