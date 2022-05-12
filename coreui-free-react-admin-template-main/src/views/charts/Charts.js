@@ -15,16 +15,16 @@ const Charts = () => {
 
   return (
     <CRow>
-      <CCol xs={12}>
+      {/* <CCol xs={12}>
         <DocsCallout
           name="Chart"
           href="components/chart"
           content="React wrapper component for Chart.js 3.0, the most popular charting library."
         />
-      </CCol>
+      </CCol> */}
       <CCol xs={6}>
         <CCard className="mb-4">
-          <CCardHeader>Bar Chart</CCardHeader>
+          <CCardHeader>Pencarian FIt & Proper</CCardHeader>
           <CCardBody>
             <CChartBar
               data={{

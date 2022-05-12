@@ -159,7 +159,7 @@ const ButtonGroups = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Data Peserta</CCardHeader>
+            <CCardHeader>Data Penguji</CCardHeader>
             <CCardBody>
               <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead color="light">
