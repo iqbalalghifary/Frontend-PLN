@@ -81,14 +81,14 @@ const ButtonGroups = () => {
   //   },
   // ];
 
-  const [peserta, setPeserta] = useState([]);
+  const [penguji, setPenguji] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await api.readPenguji();
       const arr = result.data.data;
     console.log(arr)
-     setPeserta(arr);
+     setPenguji(arr);
     };
     fetchData();
   }, []);
@@ -118,59 +118,30 @@ const ButtonGroups = () => {
                     <CTableHeaderCell>Edit</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
-                {/* <CTableBody> */}
-                  {/* {peserta.map((item, index) => (
-                    <CTableRow v-for="item in tableItems" key={index}>
+                <CTableBody>
+                  {penguji.map((item) => (
+                    <CTableRow v-for="item in tableItems">
                       <CTableDataCell className="text-center">
-                        <CAvatar
-                          size="md"
-                          src={item.avatar.src}
-                          status={item.avatar.status}
-                        />
+                      
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div>{item.user.name}</div>
-                        <div className="small text-medium-emphasis">
-                          <span>{item.user.new ? "New" : "Recurring"}</span> |
-                          Registered: {item.user.registered}
-                        </div>
+                      <div>{item.attributes.pegawai.data.attributes.nama}</div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon
-                          size="xl"
-                          icon={item.country.flag}
-                          title={item.country.name}
-                        />
+                      <div>{item.attributes.pegawai.data.attributes.nip}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>{item.usage.value}%</strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              {item.usage.period}
-                            </small>
-                          </div>
-                        </div>
-                        <CProgress
-                          thin
-                          color={item.usage.color}
-                          value={item.usage.value}
-                        />
+                      <div>{item.attributes.pegawai.data.attributes.nip}</div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.payment.icon} />
+                    
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div className="small text-medium-emphasis">
-                          Last login
-                        </div>
-                        <strong>{item.activity}</strong>
+                       
                       </CTableDataCell>
                     </CTableRow>
                   ))}
-                </CTableBody> */}
+                </CTableBody>
               </CTable>
             </CCardBody>
           </CCard>

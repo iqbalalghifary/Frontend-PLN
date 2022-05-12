@@ -13,6 +13,7 @@ import {
   cilSearch,
   cilSpeedometer,
   //cilStar,
+  cilInfo,
   cilUser,
 } from "@coreui/icons";
 import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
@@ -67,29 +68,43 @@ const _nav = [
         name: "Penilaian Wawancara",
         to: "/forms/range",
       },
+      
+    ],
+  },
+
+  {
+    component: CNavGroup,
+    name: "Report",
+    icon: <CIcon icon={cilInfo} customClassName="nav-icon" />,
+    items: [
       {
         component: CNavItem,
-        name: "Floating Labels",
-        to: "/forms/floating-labels",
+        name: "Rekap Nilai Fit & Proper",
+        to: "/forms/rekap-nilai-fit-proper",
       },
       {
         component: CNavItem,
-        name: "Layout",
-        to: "/forms/layout",
+        name: "Rekap Manual Nilai Fit & Proper",
+        to: "/forms/rekap-manual-fit-proper",
       },
       {
         component: CNavItem,
-        name: "Validation",
-        to: "/forms/validation",
+        name: "Cetak Nilai Fit & Proper",
+        to: "/forms/cetak-nilai-fit-proper",
+      },
+      {
+        component: CNavItem,
+        name: "Rekap Nilai Wawancara",
+        to: "/forms/rekap-nilai-wawancara",
+      },
+      {
+        component: CNavItem,
+        name: "Cetak Nilai Wawancara",
+        to: "/forms/cetak-nilai-wawancara",
       },
     ],
   },
-  {
-    component: CNavItem,
-    name: "Report",
-    to: "/charts",
-    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
-  },
+
   {
     component: CNavItem,
     name: "Pencarian Fit & Proper",

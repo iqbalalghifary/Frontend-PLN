@@ -1,6 +1,5 @@
 import React, { Component, Suspense } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import * as api from "./api";
 import "./scss/style.scss";
 
 const loading = (

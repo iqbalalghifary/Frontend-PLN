@@ -1,6 +1,10 @@
 import React from 'react'
 
 import {
+  CDropdown,
+  CDropdownMenu,
+  CDropdownToggle,
+  CDropdownItem,
   CAvatar,
   CButton,
   CButtonGroup,
@@ -18,7 +22,7 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import { CChartLine } from '@coreui/react-chartjs'
+import { CChartLine, CChartPie } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
 import {
@@ -42,6 +46,7 @@ import {
   cilPeople,
   cilUser,
   cilUserFemale,
+  cilCalendar,
 } from '@coreui/icons'
 
 
@@ -53,7 +58,109 @@ const Dashboard = () => {
           Welcome to fit and proper dahsboard
         </CCardHeader>
         <CCardBody>
-          <CRow>Pilih Bulan Tahun :</CRow>
+          <CRow>
+            <CCol style={{flex:1}}> Pilih Bulan Tahun : </CCol>
+            <CCol style={{flex:1}}>
+          <CDropdown>
+                <CDropdownToggle color="secondary" variant="outline" style={{ width:350}}>
+                  Pilih...                          
+          </CDropdownToggle>
+          <CDropdownMenu>
+                  <CDropdownItem href="#">Action</CDropdownItem>
+                  <CDropdownItem href="#">Another action</CDropdownItem>
+                  <CDropdownItem href="#">Something else here</CDropdownItem>
+                  <CDropdownItem href="#">Separated link</CDropdownItem>
+                </CDropdownMenu>
+              </CDropdown>
+              </CCol>
+              <CCol style={{flex:1}}>
+                <CButton>Go</CButton>
+              </CCol>
+              </CRow>
+              <CRow>
+              <CIcon icon="cilCalendar" size="xl"/>
+              </CRow>
+              <CRow>
+        <CCol xs>
+          <CCard className="mb-4">
+            <CCardHeader>Jadwal Fit Proper</CCardHeader>
+            <CCardBody>
+              <CTable align="middle" className="mb-0 border" hover responsive>
+                <CTableHead color="light">
+                  <CTableRow>
+                    <CTableHeaderCell className="text-center">
+                      No
+                    </CTableHeaderCell>
+                    <CTableHeaderCell>Nama</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">
+                      NIP
+                    </CTableHeaderCell>
+                    <CTableHeaderCell>Jabatan</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">
+                      Proyeksi
+                    </CTableHeaderCell>
+                    <CTableHeaderCell>Tanggal</CTableHeaderCell>
+                    <CTableHeaderCell>Penguji</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                {/* <CTableBody> */}
+                  {/* {peserta.map((item, index) => (
+                    <CTableRow v-for="item in tableItems" key={index}>
+                      <CTableDataCell className="text-center">
+                        <CAvatar
+                          size="md"
+                          src={item.avatar.src}
+                          status={item.avatar.status}
+                        />
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <div>{item.user.name}</div>
+                        <div className="small text-medium-emphasis">
+                          <span>{item.user.new ? "New" : "Recurring"}</span> |
+                          Registered: {item.user.registered}
+                        </div>
+                      </CTableDataCell>
+                      <CTableDataCell className="text-center">
+                        <CIcon
+                          size="xl"
+                          icon={item.country.flag}
+                          title={item.country.name}
+                        />
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <div className="clearfix">
+                          <div className="float-start">
+                            <strong>{item.usage.value}%</strong>
+                          </div>
+                          <div className="float-end">
+                            <small className="text-medium-emphasis">
+                              {item.usage.period}
+                            </small>
+                          </div>
+                        </div>
+                        <CProgress
+                          thin
+                          color={item.usage.color}
+                          value={item.usage.value}
+                        />
+                      </CTableDataCell>
+                      <CTableDataCell className="text-center">
+                        <CIcon size="xl" icon={item.payment.icon} />
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <div className="small text-medium-emphasis">
+                          Last login
+                        </div>
+                        <strong>{item.activity}</strong>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody> */}
+              </CTable>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
         </CCardBody>
       </CCard>
     </CRow>

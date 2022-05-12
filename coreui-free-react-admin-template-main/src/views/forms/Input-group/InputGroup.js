@@ -1,4 +1,5 @@
 import React from 'react'
+import * as api from '../../../api'
 import {
   CButton,
   CCard,
@@ -19,9 +20,22 @@ import {
   CInputGroupText,
   CRow,
 } from '@coreui/react'
+//import SearchField from 'react-search-field';
 import { DocsCallout, DocsExample } from 'src/components'
 
 const select = () => {
+  // const [peserta, setPeserta] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const result = await api.readPenguji();
+  //     const arr = result.data.data;
+  //   console.log(arr)
+  //    setPeserta(arr);
+  //   };
+  //   fetchData();
+  // }, []);
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -31,6 +45,10 @@ const select = () => {
           </CCardHeader>
           <CCardBody>
             <CFormLabel htmlFor="basic-url">NIP</CFormLabel>
+            {/* <SearchField 
+              placeholder='Search item'
+              onChange={onChange}
+            /> */}
             <CInputGroup className="mb-3">
               <CFormInput placeholder="NIP" aria-label="NIP" aria-describedby="button-addon2" />
               <CButton type="button" color="warning" variant="" id="button-addon2">
