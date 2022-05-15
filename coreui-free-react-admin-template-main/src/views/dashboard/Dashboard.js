@@ -13,6 +13,8 @@ import {
   CCardFooter,
   CCardHeader,
   CCol,
+  CFormInput,
+  CInputGroup,
   CProgress,
   CRow,
   CTable,
@@ -55,23 +57,17 @@ const Dashboard = () => {
     <CRow>
       <CCard>
         <CCardHeader style={{textAlign:"center"}}>
-          Welcome to fit and proper dahsboard
+          <h4>Welcome To Fit and Proper Dahsboard</h4>
         </CCardHeader>
         <CCardBody>
           <CRow>
             <CCol style={{flex:1}}> Pilih Bulan Tahun : </CCol>
             <CCol style={{flex:1}}>
-          <CDropdown>
-                <CDropdownToggle color="secondary" variant="outline" style={{ width:350}}>
-                  Pilih...                          
-          </CDropdownToggle>
-          <CDropdownMenu>
-                  <CDropdownItem href="#">Action</CDropdownItem>
-                  <CDropdownItem href="#">Another action</CDropdownItem>
-                  <CDropdownItem href="#">Something else here</CDropdownItem>
-                  <CDropdownItem href="#">Separated link</CDropdownItem>
-                </CDropdownMenu>
-              </CDropdown>
+            <CInputGroup className="mb-3">
+              <CFormInput
+                color="secondary" variant="outline" style={{ width:350}} type="month"
+              />
+            </CInputGroup>
               </CCol>
               <CCol style={{flex:1}}>
                 <CButton>Go</CButton>
