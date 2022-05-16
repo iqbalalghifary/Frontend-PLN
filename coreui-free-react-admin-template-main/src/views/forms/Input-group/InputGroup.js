@@ -29,13 +29,6 @@ const select = () => {
   const [peserta, setPeserta] = useState([])
   const [nip, setNIP] = useState("")
   const readPeserta = () => axios.get('https://c10e-114-124-130-20.ap.ngrok.io/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade')
-
-  // const submitHandler = (e) => {
-  //   const data = new FormData(e.target);
-  //   console.log("data", data.values());
-  //   console.log(e.target.values, "hi");
-  //   e.preventDefault();
-  // };  
   
   useEffect(() => {
     const fetchData = async () => {
@@ -57,6 +50,41 @@ const select = () => {
     document.getElementById("nama").value = peserta[idx].attributes.pegawai.data.attributes.nama
     document.getElementById("jabatan").value = peserta[idx].attributes.pegawai.data.attributes.jabatan.data.attributes.nama_jabatan
     document.getElementById("grade").value = peserta[idx].attributes.pegawai.data.attributes.grade.data.attributes.nama_grade
+  }
+
+  const url = 'https://c10e-114-124-130-20.ap.ngrok.io/api/pendaftars'
+  const [pendaftar, setPendaftar] = useState({
+    data : {
+      urjab :"",
+      Jenis_FitnProper : "",
+      date : "",
+      proyeksi_jabatan : "",
+      jenjang_jabatan : "",
+      file_cv: "",
+      file_ppt: "",
+      pesertas: "",
+  }
+  })
+  
+  function submit(e) {
+    const idx = peserta.findIndex(object => {
+      return nip === document.getElementById("nip").value})
+    e.preventDefault();
+    axios.post(url,{
+      data : {
+        urjab :document.getElementById("urjab").value,
+        Jenis_FitnProper : document.getElementById("fp").value,
+        date : document.getElementById("date").value,
+        proyeksi_jabatan : document.getElementById("proyeksi").value,
+        jenjang_jabatan : document.getElementById("jenjab").value,
+        file_cv: "",
+        file_ppt: "",
+        pesertas: peserta[idx].id,
+    }
+    })
+    .then(res=>{
+      console.log(res.data)
+    })
   }
 
   return (
@@ -124,7 +152,7 @@ const select = () => {
             <CRow className="mb-3">
               <CFormLabel htmlFor="jenjab" className="col-sm-2 col-form-label">Jenjang Jabatan</CFormLabel>
               <CCol sm={5}>
-                <CFormSelect className="mb-3" >
+                <CFormSelect id="jenjab" className="mb-3" >
                   <option value="1">One</option>
                   <option value="2">Two</option>
                 </CFormSelect>              
@@ -133,7 +161,7 @@ const select = () => {
             <CRow className="mb-3">
               <CFormLabel htmlFor="fp" className="col-sm-2 col-form-label">Jenis Fit & Proper</CFormLabel>
               <CCol sm={5}>
-                <CFormSelect className="mb-3" >
+                <CFormSelect id="fp" className="mb-3" >
                   <option value="1">Reguler</option>
                   <option value="2">Vicon</option>
                 </CFormSelect>              
@@ -188,8 +216,8 @@ const select = () => {
               </CCol>
             </CRow>
             <CRow className="mb-3">
-              <CCol  sm={1}>
-                <CButton type="button" color="primary" variant="" id="button-addon2">
+              <CCol sm={1}>
+                <CButton type="submit" color="primary" variant="" id="button-addon2" onClick={(e)=>submit(e)}>
                   SAVE
                 </CButton>
               </CCol>

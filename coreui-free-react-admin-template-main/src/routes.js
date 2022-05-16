@@ -75,7 +75,7 @@ const routes = [
   { path: '/buttons/buttons', name: 'Peserta', element: Buttons },
   { path: '/buttons/dropdowns', name: 'Dropdowns', element: Dropdowns },
   { path: '/buttons/button-groups', name: 'Penguji', element: ButtonGroups },
-  { path: '/charts', name: 'Charts', element: Charts },
+  { path: '/charts', name: 'Cari Fit & Proper', element: Charts },
   { path: '/forms', name: 'Fit & Proper', element: FormControl, exact: true },
   { path: '/forms/form-control', name: 'Form Control', element: FormControl },
   { path: '/forms/select', name: 'Pendaftaran Wawancara', element: Select },
