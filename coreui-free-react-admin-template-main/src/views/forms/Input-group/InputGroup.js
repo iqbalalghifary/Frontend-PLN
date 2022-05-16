@@ -23,15 +23,12 @@ import {
   CInputGroupText,
   CRow,
 } from '@coreui/react'
-//import SearchField from 'react-search-field';
 import { DocsCallout, DocsExample } from 'src/components'
 
 const select = () => {
-  
-  // const url = 'https://f7cf-114-124-131-79.ap.ngrok.io/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade&populate[pegawai][filters][nip][$eq]=${nip}'
-  const [peserta, setPeserta] = useState({})
-  const [nip, setNIP] = useState(document.getElementById("nip").value)
-  // const readPeserta = () => axios.get(url)
+  const [peserta, setPeserta] = useState([])
+  const [nip, setNIP] = useState("")
+  const readPeserta = () => axios.get('https://c10e-114-124-130-20.ap.ngrok.io/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade')
 
   // const submitHandler = (e) => {
   //   const data = new FormData(e.target);
@@ -41,28 +38,31 @@ const select = () => {
   // };  
   
   useEffect(() => {
-    axios.get('https://f7cf-114-124-131-79.ap.ngrok.io/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade&populate[pegawai][filters][nip][$eq]=${nip}')
-    .then(res => {
-      setPeserta(res.data)
-    })
+    const fetchData = async () => {
+      const result = await readPeserta();
+      const arr = result.data.data;
+    console.log(arr)
+     setPeserta(arr);
+    };
+    fetchData();
   }, []);
-
-  // const arr = [{nip:'201511001', nama:'ali', jabatan:'a', grade:'1'},
+  // const peserta = [{nip:'201511001', nama:'ali', jabatan:'a', grade:'1'},
   //             {nip:'201511002', nama:'budi', jabatan:'b', grade:'2'},
   //             {nip:'201511003', nama:'cecep', jabatan:'a', grade:'3'}]
   
+
   function dataPeserta() { 
     const idx = peserta.findIndex(object => {
-      return nip === document.getElementById("nip").value})
-    document.getElementById("nama").value = peserta[idx].nama
-    document.getElementById("jabatan").value = peserta[idx].jabatan
-    document.getElementById("grade").value = peserta[idx].grade
+    return nip === document.getElementById("nip").value})
+    document.getElementById("nama").value = peserta[idx].attributes.pegawai.data.attributes.nama
+    document.getElementById("jabatan").value = peserta[idx].attributes.pegawai.data.attributes.jabatan.data.attributes.nama_jabatan
+    document.getElementById("grade").value = peserta[idx].attributes.pegawai.data.attributes.grade.data.attributes.nama_grade
   }
 
   return (
     <CRow>
       <CCol xs={12}>
-        <CCard className="mb-4">
+        <CCard className="mb-4">  
           <CCardHeader>
             <strong>Pendaftaran/Updating</strong> <small>Peserta Fit Proper</small>
           </CCardHeader>
@@ -74,178 +74,132 @@ const select = () => {
                 // encType="multipart/form-data"
                 // className="form-horizontal"
               >
-            <CFormLabel htmlFor="basic-url">NIP</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput id="nip" placeholder="NIP" aria-label="NIP" aria-describedby="cek" 
-                value={nip}
-                onChange={(e) => {
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="nip" className="col-sm-2 col-form-label">NIP</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="nip" placeholder="NIP" 
+                  value={nip}
+                  onChange={(e) => {
                   setNIP(e.target.value);
                   console.log(nip)
-                }}/>
-              <CButton type="submit" color="warning" variant="outline" id="cek" onClick={() => dataPeserta()}>
-                CEK
-              </CButton>
-            </CInputGroup>
+              }}/>
+              </CCol>
+              <CCol>
+                <CButton type="submit" color="warning" variant="outline" id="cek" onClick={() => dataPeserta()}>
+                  CEK
+                </CButton>
+              </CCol>
+            </CRow>
+            
+            <CRow className="mb-3">
+            <CFormLabel htmlFor="nama" className="col-sm-2 col-form-label">Nama</CFormLabel>
+            <CCol sm={10}>
+              <CFormInput type="text" id="nama" placeholder="Nama" disabled/>
+            </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="jabatan" className="col-sm-2 col-form-label">Jabatan</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="text" id="jabatan" placeholder="Jabatan" disabled/>
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="grade" className="col-sm-2 col-form-label">Grade</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="text" id="grade" placeholder="Grade" disabled/>
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="date" className="col-sm-2 col-form-label">Date</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="date" id="date" />
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="proyeksi" className="col-sm-2 col-form-label">Proyeksi</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="text" id="proyeksi" placeholder="Jabatan Proyeksi"/>
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="jenjab" className="col-sm-2 col-form-label">Jenjang Jabatan</CFormLabel>
+              <CCol sm={5}>
+                <CFormSelect className="mb-3" >
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                </CFormSelect>              
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="fp" className="col-sm-2 col-form-label">Jenis Fit & Proper</CFormLabel>
+              <CCol sm={5}>
+                <CFormSelect className="mb-3" >
+                  <option value="1">Reguler</option>
+                  <option value="2">Vicon</option>
+                </CFormSelect>              
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="urjab" className="col-sm-2 col-form-label">Pilih Urjab</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="urjab" placeholder="Uraian Jabatan"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="ppt" className="col-sm-2 col-form-label">Upload PPT *.ppt/.pptx</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="file" id="ppt"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="doc" className="col-sm-2 col-form-label">Upload CV *.doc/.docx</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="file" id="doc"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="wan1" className="col-sm-2 col-form-label">Pewawancara 1</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="wan1" placeholder="Pewawancara 1"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="wan2" className="col-sm-2 col-form-label">Pewawancara 2</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="wan2" placeholder="Pewawancara 2"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="wan3" className="col-sm-2 col-form-label">Pewawancara 3</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="wan3" placeholder="Pewawancara 3"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-4">
+              <CFormLabel htmlFor="wan4" className="col-sm-2 col-form-label">Pewawancara 4</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="wan4" placeholder="Pewawancara 4"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="wan5" className="col-sm-2 col-form-label">Pewawancara 5</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="wan5" placeholder="Pewawancara 5"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CCol  sm={1}>
+                <CButton type="button" color="primary" variant="" id="button-addon2">
+                  SAVE
+                </CButton>
+              </CCol>
+              <CCol>
+                <CButton type="button" color="secondary" variant="" id="button-addon2">
+                  BATAL
+                </CButton>
+              </CCol>
+            </CRow>
             </CForm>
-            <CFormLabel htmlFor="basic-url">Nama</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput id="nama" placeholder="Nama" aria-label="Nama" aria-describedby="button-addon2" disabled/>
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Jabatan</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput id="jabatan" placeholder="Jabatan" aria-label="Jabatan" aria-describedby="button-addon2" disabled/>
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Grade</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput id="grade" placeholder="Grade" aria-label="Grade" aria-describedby="button-addon2" disabled/>
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Date</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                type="date"
-                placeholder="Date"
-                aria-label="Date"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Proyeksi</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Jabatan Proyeksi"
-                aria-label="Jabatan Proyeksi"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Jenjang Jabatan</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CDropdown variant="input-group">
-                <CDropdownToggle color="secondary" variant="outline">
-                  Pilih...
-                </CDropdownToggle>
-                <CDropdownMenu>
-                  <CDropdownItem href="#">Action</CDropdownItem>
-                  <CDropdownItem href="#">Another action</CDropdownItem>
-                  <CDropdownItem href="#">Something else here</CDropdownItem>
-                  <CDropdownItem href="#">Separated link</CDropdownItem>
-                </CDropdownMenu>
-              </CDropdown>
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Jenis Fit & Proper</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CDropdown variant="input-group">
-                <CDropdownToggle color="secondary" variant="outline">
-                  Pilih...
-                </CDropdownToggle>
-                <CDropdownMenu>
-                  <CDropdownItem href="#">Reguler</CDropdownItem>
-                  <CDropdownItem href="#">Vicon</CDropdownItem>
-                </CDropdownMenu>
-              </CDropdown>
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pilih Urjab</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Uraian Jabatan"
-                aria-label="Uraian Jabatan"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Upload PPT *.ppt/.pptx</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput type="file" id="inputGroupFile01" />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Upload CV *.doc/.docx</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput type="file" id="inputGroupFile02" />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 1</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 1"
-                aria-label="Pewawancara 1"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 2</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 2"
-                aria-label="Pewawancara 2"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 3</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 3"
-                aria-label="Pewawancara 3"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 4</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 4"
-                aria-label="Pewawancara 4"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 5</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 5"
-                aria-label="Pewawancara 5"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 6</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 6"
-                aria-label="Pewawancara 6"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 7</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 7"
-                aria-label="Pewawancara 7"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 8</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 8"
-                aria-label="Pewawancara 8"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 9</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 9"
-                aria-label="Pewawancara 9"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CFormLabel htmlFor="basic-url">Pewawancara 10</CFormLabel>
-            <CInputGroup className="mb-3">
-              <CFormInput
-                placeholder="Pewawancara 10"
-                aria-label="Pewawancara 10"
-                aria-describedby="button-addon2"
-              />
-            </CInputGroup>
-            <CInputGroup className="mb-3">
-              <CButton type="button" color="primary" variant="" id="button-addon2">
-                SAVE
-              </CButton>
-              <CButton type="button" color="secondary" variant="" id="button-addon2">
-                BATAL
-              </CButton>
-            </CInputGroup>
           </CCardBody>
         </CCard>
       </CCol>
