@@ -24,6 +24,7 @@ const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
 const ButtonGroups = React.lazy(() => import('./views/buttons/button-groups/ButtonGroups'))
 const Dropdowns = React.lazy(() => import('./views/buttons/dropdowns/Dropdowns'))
+const TambahData = React.lazy(() => import('./views/buttons/button-groups/TambahData'))
 
 //Forms
 const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
@@ -51,6 +52,7 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
+ 
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
@@ -75,12 +77,13 @@ const routes = [
   { path: '/buttons/buttons', name: 'Peserta', element: Buttons },
   { path: '/buttons/dropdowns', name: 'Dropdowns', element: Dropdowns },
   { path: '/buttons/button-groups', name: 'Penguji', element: ButtonGroups },
+  { path: '/buttons/button-groups/TambahData', name: 'Tambah Data', elemen: TambahData, exact: false },
   { path: '/charts', name: 'Cari Fit & Proper', element: Charts },
   { path: '/forms', name: 'Fit & Proper', element: FormControl, exact: true },
   { path: '/forms/form-control', name: 'Form Control', element: FormControl },
   { path: '/forms/select', name: 'Pendaftaran Wawancara', element: Select },
-  { path: '/forms/checks-radios', name: 'Checks & Radios', element: ChecksRadios },
-  { path: '/forms/range', name: 'Range', element: Range },
+  { path: '/forms/checks-radios', name: 'Penilaian Fit & Proper', element: ChecksRadios },
+  { path: '/forms/range', name: 'Penilaian Wawancara  ', element: Range },
   { path: '/forms/input-group', name: 'Pendaftaran Fit & Proper', element: InputGroup },
   { path: '/forms/floating-labels', name: 'Floating Labels', element: FloatingLabels },
   { path: '/forms/layout', name: 'Layout', element: Layout },

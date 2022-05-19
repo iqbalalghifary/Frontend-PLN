@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import * as api from '../../../api';
+import url from '../../../api';
+import axios from "axios";
+import TambahData from "./TambahData";
 import {
   CAvatar,
+  CButton,
   // CButton,
   // CButtonGroup,
   CCard,
@@ -42,59 +45,33 @@ import {
   cilPeople,
   // cilUser,
   // cilUserFemale,
+  cilUserFollow,
+  cilPen,
 } from "@coreui/icons";
+import { useNavigate } from "react-router-dom";
 
 
 const ButtonGroups = () => {
-  // const tableExample = [
-  //   {
-  //     avatar: { src: avatar1, status: "success" },
-  //     user: {
-  //       name: "Yiorgos Avraamu",
-  //       new: true,
-  //       registered: "Jan 1, 2021",
-  //     },
-  //     country: { name: "USA", flag: cifUs },
-  //     usage: {
-  //       value: 50,
-  //       period: "Jun 11, 2021 - Jul 10, 2021",
-  //       color: "success",
-  //     },
-  //     payment: { name: "Mastercard", icon: cibCcMastercard },
-  //     activity: "10 sec ago",
-  //   },
-  //   {
-  //     avatar: { src: avatar2, status: "danger" },
-  //     user: {
-  //       name: "Avram Tarasios",
-  //       new: false,
-  //       registered: "Jan 1, 2021",
-  //     },
-  //     country: { name: "Brazil", flag: cifBr },
-  //     usage: {
-  //       value: 22,
-  //       period: "Jun 11, 2021 - Jul 10, 2021",
-  //       color: "info",
-  //     },
-  //     payment: { name: "Visa", icon: cibCcVisa },
-  //     activity: "5 minutes ago",
-  //   },
-  // ];
 
   const [penguji, setPenguji] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await api.readPenguji();
+      const result = await axios.get(`${url}/api/pengujis?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade&populate[pegawai][populate][2]=jenjang`);
+      console.log(result.data.data);
       const arr = result.data.data;
-    console.log(arr)
-     setPenguji(arr);
+      setPenguji(arr);
     };
     fetchData();
   }, []);
-
+  let navigate = useNavigate();
   return (
     <>
+      <CRow className="mb-3">
+        <CCol>
+        <CButton color="secondary" onClick={() => {navigate('./buttons/button-groups/TambahData')}}><CIcon icon={cilUserFollow}></CIcon>Tambah Data Penguji</CButton>
+        </CCol> 
+      </CRow>
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
@@ -119,10 +96,10 @@ const ButtonGroups = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {penguji.map((item) => (
+                  {penguji.map((item,index) => (
                     <CTableRow v-for="item in tableItems">
-                      <CTableDataCell className="text-center">
-                      
+                     <CTableDataCell className="text-center">
+                      <div>{index+1}</div>
                       </CTableDataCell>
                       <CTableDataCell>
                       <div>{item.attributes.pegawai.data.attributes.nama}</div>
@@ -131,13 +108,16 @@ const ButtonGroups = () => {
                       <div>{item.attributes.pegawai.data.attributes.nip}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                      <div>{item.attributes.pegawai.data.attributes.nip}</div>
+                      <div>{item.attributes.pegawai.data.attributes.jabatan.data.attributes.nama_jabatan}</div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                    
+                      <div>{item.attributes.pegawai.data.attributes.grade.data.attributes.nama_grade}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                       
+                      <div>{item.attributes.pegawai.data.attributes.jenjang.data.attributes.nama_jenjang}</div>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                      <CIcon icon={cilPen}></CIcon>
                       </CTableDataCell>
                     </CTableRow>
                   ))}

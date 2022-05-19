@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import * as api from '../../../api'
+import url from '../../../api'
 import {
   CButton,
   CCard,
@@ -27,8 +27,11 @@ import { DocsCallout, DocsExample } from 'src/components'
 
 const select = () => {
   const [peserta, setPeserta] = useState([])
+  const [penguji, setPenguji] = useState([])
   const [nip, setNIP] = useState("")
-  const readPeserta = () => axios.get('https://c10e-114-124-130-20.ap.ngrok.io/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade')
+  const readPeserta = () => axios.get(`${url}/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade`)
+  const readPenguji = () => axios.get(`${url}/api/pengujis?populate=*`)
+
   
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +39,16 @@ const select = () => {
       const arr = result.data.data;
     console.log(arr)
      setPeserta(arr);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result2 = await readPenguji();
+      const arr2 = result2.data.data;
+    console.log(arr2)
+     setPenguji(arr2);
     };
     fetchData();
   }, []);
@@ -52,17 +65,17 @@ const select = () => {
     document.getElementById("grade").value = peserta[idx].attributes.pegawai.data.attributes.grade.data.attributes.nama_grade
   }
 
-  const url = 'https://c10e-114-124-130-20.ap.ngrok.io/api/pendaftars'
+  const uri = `${url}/api/pendaftars`
   const [pendaftar, setPendaftar] = useState({
     data : {
       urjab :"",
-      Jenis_FitnProper : "",
-      date : "",
+      jenis_fitnproper : "",
+      tanggal : "",
       proyeksi_jabatan : "",
       jenjang_jabatan : "",
       file_cv: "",
       file_ppt: "",
-      pesertas: "",
+      peserta: "",
   }
   })
   
@@ -70,21 +83,22 @@ const select = () => {
     const idx = peserta.findIndex(object => {
       return nip === document.getElementById("nip").value})
     e.preventDefault();
-    axios.post(url,{
+    axios.post(uri,{
       data : {
         urjab :document.getElementById("urjab").value,
-        Jenis_FitnProper : document.getElementById("fp").value,
-        date : document.getElementById("date").value,
+        jenis_fitnproper : document.getElementById("fp").value,
+        tanggal : document.getElementById("date").value,
         proyeksi_jabatan : document.getElementById("proyeksi").value,
         jenjang_jabatan : document.getElementById("jenjab").value,
         file_cv: "",
         file_ppt: "",
-        pesertas: peserta[idx].id,
+        peserta: peserta[idx].id,
     }
     })
     .then(res=>{
       console.log(res.data)
     })
+    //document.location.reload(true)
   }
 
   return (
