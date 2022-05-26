@@ -27,10 +27,12 @@ import { DocsCallout, DocsExample } from 'src/components'
 
 const select = () => {
   const [peserta, setPeserta] = useState([])
-  const [penguji, setPenguji] = useState([])
+  const [grade, setGrade] = useState([])
   const [nip, setNIP] = useState("")
-  const readPeserta = () => axios.get(`${url}/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade`)
-  const readPenguji = () => axios.get(`${url}/api/pengujis?populate=*`)
+  const readPeserta = () => 
+    axios.get(
+      `${url}/api/pesertas?populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade`)
+  const readGrade = () => axios.get(`${url}/api/grades?populate=jenjangs`)
 
   
   useEffect(() => {
@@ -45,10 +47,11 @@ const select = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result2 = await readPenguji();
+      const result2 = await readGrade();
       const arr2 = result2.data.data;
-    console.log(arr2)
-     setPenguji(arr2);
+    console.log(arr2);
+    console.log(arr2.length);
+     setGrade(arr2);
     };
     fetchData();
   }, []);
@@ -58,11 +61,28 @@ const select = () => {
   
 
   function dataPeserta() { 
-    const idx = peserta.findIndex(object => {
-    return nip === document.getElementById("nip").value})
+    const idx = peserta.findIndex(x => 
+      x.attributes.pegawai.data.attributes.nip === document.getElementById("nip").value)
+    console.log(idx)
     document.getElementById("nama").value = peserta[idx].attributes.pegawai.data.attributes.nama
     document.getElementById("jabatan").value = peserta[idx].attributes.pegawai.data.attributes.jabatan.data.attributes.nama_jabatan
     document.getElementById("grade").value = peserta[idx].attributes.pegawai.data.attributes.grade.data.attributes.nama_grade
+    dataJenjang()
+  }
+
+  function dataJenjang(){
+    const idx = grade.findIndex(x => 
+      x.attributes.nama_grade === document.getElementById("grade").value)
+    console.log(idx)
+    console.log(grade[idx].attributes.jenjangs.data[0].attributes.nama_jenjang)
+    for (let i = 0; i < grade[idx].attributes.jenjangs.data.length; i++){
+      var opt = document.createElement("option")
+      opt.text = grade[idx].attributes.jenjangs.data[i].attributes.nama_jenjang
+      opt.value = grade[idx].attributes.jenjangs.data[i].attributes.nama_jenjang
+      document.getElementById("jenjab").options.add(opt)
+      console.log(opt.text)
+      console.log(opt.value)
+    }
   }
 
   const uri = `${url}/api/pendaftars`
@@ -75,30 +95,30 @@ const select = () => {
       jenjang_jabatan : "",
       file_cv: "",
       file_ppt: "",
-      peserta: "",
+      pesertas: "",
   }
   })
   
   function submit(e) {
-    const idx = peserta.findIndex(object => {
-      return nip === document.getElementById("nip").value})
+    const idx = peserta.findIndex(x => 
+      x.attributes.pegawai.data.attributes.nip === document.getElementById("nip").value)
     e.preventDefault();
     axios.post(uri,{
       data : {
         urjab :document.getElementById("urjab").value,
-        jenis_fitnproper : document.getElementById("fp").value,
-        tanggal : document.getElementById("date").value,
+        Jenis_FitnProper : document.getElementById("fp").value,
+        tangal : document.getElementById("date").value,
         proyeksi_jabatan : document.getElementById("proyeksi").value,
         jenjang_jabatan : document.getElementById("jenjab").value,
-        file_cv: "",
-        file_ppt: "",
-        peserta: peserta[idx].id,
+        file_ppt : document.getElementById("ppt").value,
+        file_cv : document.getElementById("doc").value,
+        pesertas: peserta[idx].id,
     }
     })
     .then(res=>{
       console.log(res.data)
     })
-    //document.location.reload(true)
+    console.log(document.getElementById("ppt").value)
   }
 
   return (
@@ -166,9 +186,9 @@ const select = () => {
             <CRow className="mb-3">
               <CFormLabel htmlFor="jenjab" className="col-sm-2 col-form-label">Jenjang Jabatan</CFormLabel>
               <CCol sm={5}>
-                <CFormSelect id="jenjab" className="mb-3" >
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
+                <CFormSelect id="jenjab" className="mb-3">
+                  <option disabled>Pilih...</option>
+                  <CDropdownDivider />
                 </CFormSelect>              
               </CCol>
             </CRow>
@@ -176,8 +196,10 @@ const select = () => {
               <CFormLabel htmlFor="fp" className="col-sm-2 col-form-label">Jenis Fit & Proper</CFormLabel>
               <CCol sm={5}>
                 <CFormSelect id="fp" className="mb-3" >
-                  <option value="1">Reguler</option>
-                  <option value="2">Vicon</option>
+                  <option disabled>Pilih...</option>
+                  <CDropdownDivider />
+                  <option value="Regular">Reguler</option>
+                  <option value="Vicon">Vicon</option>
                 </CFormSelect>              
               </CCol>
             </CRow>

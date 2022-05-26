@@ -15,12 +15,12 @@ import {
 } from '@coreui/react'
 import { DocsCallout, DocsExample } from 'src/components'
 
-const Dropdowns = () => {
+const TambahData = () => {
   return (
     <CRow>
-      {/* <CCol xs={12}>
+      <CCol xs={12}>
         <DocsCallout name="Dropdown" href="components/dropdown" />
-      </CCol> */}
+      </CCol>
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
@@ -338,4 +338,4 @@ const Dropdowns = () => {
   )
 }
 
-export default Dropdowns
+export default TambahData

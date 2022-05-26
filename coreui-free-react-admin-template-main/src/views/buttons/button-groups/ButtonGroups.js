@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import url from '../../../api';
 import axios from "axios";
-import TambahData from "./TambahData";
+//import TambahData from "./TambahData";
 import {
   CAvatar,
   CButton,
@@ -48,7 +48,7 @@ import {
   cilUserFollow,
   cilPen,
 } from "@coreui/icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const ButtonGroups = () => {
@@ -64,12 +64,17 @@ const ButtonGroups = () => {
     };
     fetchData();
   }, []);
-  let navigate = useNavigate();
+  //let navigate = useNavigate();
   return (
     <>
       <CRow className="mb-3">
         <CCol>
-        <CButton color="secondary" onClick={() => {navigate('./buttons/button-groups/TambahData')}}><CIcon icon={cilUserFollow}></CIcon>Tambah Data Penguji</CButton>
+          <Link to={'/buttons/dropdowns'}>
+            <CButton color="secondary">
+              Tambah Data Penguji
+            </CButton>
+          </Link>
+        {/* <CButton color="secondary" onClick={() => {navigate('./buttons/button-groups/TambahData')}}><CIcon icon={cilUserFollow}></CIcon>Tambah Data Penguji</CButton> */}
         </CCol> 
       </CRow>
       <CRow>
