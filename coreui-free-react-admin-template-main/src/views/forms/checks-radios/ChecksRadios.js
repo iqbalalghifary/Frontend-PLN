@@ -1,390 +1,252 @@
-import React from 'react'
-import { CCard, CCardBody, CCardHeader, CCol, CFormCheck, CFormSwitch, CRow } from '@coreui/react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import url from '../../../api'
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CDropdown,
+  CDropdownDivider,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
+  CForm,
+  CFormCheck,
+  CFormGroup,
+  CFormInput,
+  CFormLabel,
+  CFormSelect,
+  CFormTextarea,
+  CInputGroup,
+  CInputGroupText,
+  CRow,
+} from '@coreui/react'
 import { DocsCallout, DocsExample } from 'src/components'
 
-const ChecksRadios = () => {
+const daftarFitProper = () => {
+  const [peserta, setPeserta] = useState([])
+  const [grade, setGrade] = useState([])
+  const [nip, setNIP] = useState("")
+  const readPeserta = () => 
+    axios.get(
+      `${url}/api/pesertas?populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade`)
+  const readGrade = () => axios.get(`${url}/api/grades?populate=jenjangs`)
+
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await readPeserta();
+      const arr = result.data.data;
+    console.log(arr)
+     setPeserta(arr);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result2 = await readGrade();
+      const arr2 = result2.data.data;
+    console.log(arr2);
+    console.log(arr2.length);
+     setGrade(arr2);
+    };
+    fetchData();
+  }, []);
+  // const peserta = [{nip:'201511001', nama:'ali', jabatan:'a', grade:'1'},
+  //             {nip:'201511002', nama:'budi', jabatan:'b', grade:'2'},
+  //             {nip:'201511003', nama:'cecep', jabatan:'a', grade:'3'}]
+  
+
+  function dataPeserta() { 
+    const idx = peserta.findIndex(x => 
+      x.attributes.pegawai.data.attributes.nip === document.getElementById("nip").value)
+    console.log(idx)
+    document.getElementById("nama").value = peserta[idx].attributes.pegawai.data.attributes.nama
+    document.getElementById("jabatan").value = peserta[idx].attributes.pegawai.data.attributes.jabatan.data.attributes.nama_jabatan
+    document.getElementById("grade").value = peserta[idx].attributes.pegawai.data.attributes.grade.data.attributes.nama_grade
+    dataJenjang()
+  }
+
+  function dataJenjang(){
+    const idx = grade.findIndex(x => 
+      x.attributes.nama_grade === document.getElementById("grade").value)
+    console.log(idx)
+    console.log(grade[idx].attributes.jenjangs.data[0].attributes.nama_jenjang)
+    for (let i = 0; i < grade[idx].attributes.jenjangs.data.length; i++){
+      var opt = document.createElement("option")
+      opt.text = grade[idx].attributes.jenjangs.data[i].attributes.nama_jenjang
+      opt.value = grade[idx].attributes.jenjangs.data[i].attributes.nama_jenjang
+      document.getElementById("jenjab").options.add(opt)
+      console.log(opt.text)
+      console.log(opt.value)
+    }
+  }
+
+  const uri = `${url}/api/pendaftars`
+  const [pendaftar, setPendaftar] = useState({
+    data : {
+      urjab :"",
+      jenis_fitnproper : "",
+      tanggal : "",
+      proyeksi_jabatan : "",
+      jenjang_jabatan : "",
+      file_cv: "",
+      file_ppt: "",
+      peserta: "",
+  }
+  })
+  
+  function submit(e) {
+    const idx = peserta.findIndex(x => 
+      x.attributes.pegawai.data.attributes.nip === document.getElementById("nip").value)
+    e.preventDefault();
+    axios.post(uri,{
+      data : {
+        urjab :document.getElementById("urjab").value,
+        Jenis_FitnProper : document.getElementById("fp").value,
+        tangal : document.getElementById("date").value,
+        proyeksi_jabatan : document.getElementById("proyeksi").value,
+        jenjang_jabatan : document.getElementById("jenjab").value,
+        file_ppt : document.getElementById("ppt").value,
+        file_cv : document.getElementById("doc").value,
+        pesertas: peserta[idx].id,
+    }
+    })
+    .then(res=>{
+      console.log(res.data)
+    })
+    console.log(document.getElementById("ppt").value)
+  }
+
   return (
     <CRow>
       <CCol xs={12}>
-        <DocsCallout name="Penilaian Fit & Proper" href="forms/Penilaian Fit & Proper" />
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
+        <CCard className="mb-4">  
           <CCardHeader>
-            <strong>React Checkbox</strong>
+            <strong>Pendaftaran/Updating</strong> <small>Peserta Fit Proper</small>
           </CCardHeader>
           <CCardBody>
-            <DocsExample href="forms/Penilaian Fit & Proper">
-              <CFormCheck id="flexCheckDefault" label="Default checkbox" />
-              <CFormCheck id="flexCheckChecked" label="Checked checkbox" defaultChecked />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Checkbox</strong> <small>Disabled</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              Add the <code>disabled</code> attribute and the associated <code>&lt;label&gt;</code>s
-              are automatically styled to match with a lighter color to help indicate the
-              input&#39;s state.
-            </p>
-            <DocsExample href="forms/Penilaian Fit & Proper#disabled">
-              <CFormCheck label="Disabled checkbox" disabled />
-              <CFormCheck label="Disabled checked checkbox" defaultChecked disabled />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Radio</strong>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              Add the <code>disabled</code> attribute and the associated <code>&lt;label&gt;</code>s
-              are automatically styled to match with a lighter color to help indicate the
-              input&#39;s state.
-            </p>
-            <DocsExample href="forms/Penilaian Fit & Proper#radios">
-              <CFormCheck
-                type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault1"
-                label="Default radio"
-              />
-              <CFormCheck
-                type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault2"
-                label="Checked radio"
-                defaultChecked
-              />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Radio</strong> <small>Disabled</small>
-          </CCardHeader>
-          <CCardBody>
-            <DocsExample href="forms/Penilaian Fit & Proper#disabled-1">
-              <CFormCheck
-                type="radio"
-                name="flexRadioDisabled"
-                id="flexRadioDisabled"
-                label="Disabled radio"
-                disabled
-              />
-              <CFormCheck
-                type="radio"
-                name="flexRadioDisabled"
-                id="flexRadioCheckedDisabled"
-                label="Disabled checked radio"
-                defaultChecked
-                disabled
-              />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Switches</strong>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              A switch has the markup of a custom checkbox but uses the <code>switch</code> boolean
-              properly to render a toggle switch. Switches also support the <code>disabled</code>{' '}
-              attribute.
-            </p>
-            <DocsExample href="forms/Penilaian Fit & Proper#switches">
-              <CFormSwitch label="Default switch checkbox input" id="formSwitchCheckDefault" />
-              <CFormSwitch
-                label="Checked switch checkbox input"
-                id="formSwitchCheckChecked"
-                defaultChecked
-              />
-              <CFormSwitch
-                label="Disabled switch checkbox input"
-                id="formSwitchCheckDisabled"
-                disabled
-              />
-              <CFormSwitch
-                label="Disabled checked switch checkbox input"
-                id="formSwitchCheckCheckedDisabled"
-                defaultChecked
-                disabled
-              />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Switches</strong> <small>Sizes</small>
-          </CCardHeader>
-          <CCardBody>
-            <DocsExample href="forms/Penilaian Fit & Proper#sizes">
-              <CFormSwitch label="Default switch checkbox input" id="formSwitchCheckDefault" />
-              <CFormSwitch
-                size="lg"
-                label="Large switch checkbox input"
-                id="formSwitchCheckDefaultLg"
-              />
-              <CFormSwitch
-                size="xl"
-                label="Extra large switch checkbox input"
-                id="formSwitchCheckDefaultXL"
-              />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>Penilaian Fit & Proper</strong> <small>Default layout (stacked)</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              By default, any number of checkboxes and radios that are immediate sibling will be
-              vertically stacked and appropriately spaced.
-            </p>
-            <DocsExample href="forms/Penilaian Fit & Proper#default-stacked">
-              <CFormCheck id="defaultCheck1" label="Default checkbox" />
-              <CFormCheck id="defaultCheck2" label="Disabled checkbox" disabled />
-            </DocsExample>
-            <DocsExample href="forms/Penilaian Fit & Proper#default-stacked">
-              <CFormCheck
-                type="radio"
-                name="exampleRadios"
-                id="exampleRadios1"
-                value="option1"
-                label="Default radio"
-                defaultChecked
-              />
-              <CFormCheck
-                type="radio"
-                name="exampleRadios"
-                id="exampleRadios2"
-                value="option2"
-                label="Second default radio"
-              />
-              <CFormCheck
-                type="radio"
-                name="exampleRadios"
-                id="exampleRadios3"
-                value="option3"
-                label="Disabled radio"
-                disabled
-              />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>Penilaian Fit & Proper</strong> <small>Inline</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              Group checkboxes or radios on the same horizontal row by adding <code>inline</code>{' '}
-              boolean property to any <code>&lt;CFormCheck&gt;</code>.
-            </p>
-            <DocsExample href="forms/Penilaian Fit & Proper#inline">
-              <CFormCheck inline id="inlineCheckbox1" value="option1" label="1" />
-              <CFormCheck inline id="inlineCheckbox2" value="option2" label="2" />
-              <CFormCheck
-                inline
-                id="inlineCheckbox3"
-                value="option3"
-                label="3 (disabled)"
-                disabled
-              />
-            </DocsExample>
-            <DocsExample href="forms/Penilaian Fit & Proper#inline">
-              <CFormCheck
-                inline
-                type="radio"
-                name="inlineRadioOptions"
-                id="inlineCheckbox1"
-                value="option1"
-                label="1"
-              />
-              <CFormCheck
-                inline
-                type="radio"
-                name="inlineRadioOptions"
-                id="inlineCheckbox2"
-                value="option2"
-                label="2"
-              />
-              <CFormCheck
-                inline
-                type="radio"
-                name="inlineRadioOptions"
-                id="inlineCheckbox3"
-                value="option3"
-                label="3 (disabled)"
-                disabled
-              />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>Penilaian Fit & Proper</strong> <small>Without labels</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              Remember to still provide some form of accessible name for assistive technologies (for
-              instance, using <code>aria-label</code>).
-            </p>
-            <DocsExample href="forms/Penilaian Fit & Proper#without-labels">
-              <div>
-                <CFormCheck id="checkboxNoLabel" value="" aria-label="..." />
-              </div>
-              <div>
-                <CFormCheck
-                  type="radio"
-                  name="radioNoLabel"
-                  id="radioNoLabel"
-                  value=""
-                  aria-label="..."
-                />
-              </div>
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>Toggle buttons</strong>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              Create button-like checkboxes and radio buttons by using <code>button</code> boolean
-              property on the <code>&lt;CFormCheck&gt;</code> component. These toggle buttons can
-              further be grouped in a button group if needed.
-            </p>
-            <DocsExample href="forms/Penilaian Fit & Proper#toggle-buttons">
-              <CFormCheck
-                button={{ color: 'primary ' }}
-                id="btn-check"
-                autoComplete="off"
-                label="Single toggle"
-              />
-            </DocsExample>
-            <DocsExample href="forms/Penilaian Fit & Proper#toggle-buttons">
-              <CFormCheck
-                button={{ color: 'primary ' }}
-                id="btn-check-2"
-                autoComplete="off"
-                label="Checked"
-                defaultChecked
-              />
-            </DocsExample>
-            <DocsExample href="forms/Penilaian Fit & Proper#toggle-buttons">
-              <CFormCheck
-                button={{ color: 'primary ' }}
-                id="btn-check-3"
-                autoComplete="off"
-                label="Disabled"
-                disabled
-              />
-            </DocsExample>
-            <h3>Radio toggle buttons</h3>
-            <DocsExample href="forms/Penilaian Fit & Proper#toggle-buttons">
-              <CFormCheck
-                button={{ color: 'secondary' }}
-                type="radio"
-                name="options"
-                id="option1"
-                autoComplete="off"
-                label="Checked"
-                defaultChecked
-              />
-              <CFormCheck
-                button={{ color: 'secondary' }}
-                type="radio"
-                name="options"
-                id="option2"
-                autoComplete="off"
-                label="Radio"
-              />
-              <CFormCheck
-                button={{ color: 'secondary' }}
-                type="radio"
-                name="options"
-                id="option3"
-                autoComplete="off"
-                label="Radio"
-                disabled
-              />
-              <CFormCheck
-                button={{ color: 'secondary' }}
-                type="radio"
-                name="options"
-                id="option4"
-                autoComplete="off"
-                label="Radio"
-              />
-            </DocsExample>
-            <h3>Outlined styles</h3>
-            <p className="text-medium-emphasis small">
-              Different variants of button, such at the various outlined styles, are supported.
-            </p>
-            <DocsExample href="forms/Penilaian Fit & Proper#toggle-buttons">
-              <div>
-                <CFormCheck
-                  button={{ color: 'primary', variant: 'outline' }}
-                  id="btn-check-outlined"
-                  autoComplete="off"
-                  label="Single toggle"
-                />
-              </div>
-              <div>
-                <CFormCheck
-                  button={{ color: 'secondary', variant: 'outline' }}
-                  id="btn-check-2-outlined"
-                  autoComplete="off"
-                  label="Checked"
-                  defaultChecked
-                />
-              </div>
-              <div>
-                <CFormCheck
-                  button={{ color: 'success', variant: 'outline' }}
-                  type="radio"
-                  name="options-outlined"
-                  id="success-outlined"
-                  autoComplete="off"
-                  label="Radio"
-                  defaultChecked
-                />
-                <CFormCheck
-                  button={{ color: 'danger', variant: 'outline' }}
-                  type="radio"
-                  name="options-outlined"
-                  id="danger-outlined"
-                  autoComplete="off"
-                  label="Radio"
-                />
-              </div>
-            </DocsExample>
+          <p id="demo"></p>
+          <CForm
+                // onSubmit={submitHandler}
+                // method="post"
+                // encType="multipart/form-data"
+                // className="form-horizontal"
+              >
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="nip" className="col-sm-2 col-form-label">NIP</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="nip" placeholder="NIP" 
+                  value={nip}
+                  onChange={(e) => {
+                  setNIP(e.target.value);
+                  console.log(nip)
+              }}/>
+              </CCol>
+              <CCol>
+                <CButton type="submit" color="warning" variant="outline" id="cek" onClick={() => dataPeserta()}>
+                  CEK
+                </CButton>
+              </CCol>
+            </CRow>
+            
+            <CRow className="mb-3">
+            <CFormLabel htmlFor="nama" className="col-sm-2 col-form-label">Nama</CFormLabel>
+            <CCol sm={10}>
+              <CFormInput type="text" id="nama" placeholder="Nama" disabled/>
+            </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="jabatan" className="col-sm-2 col-form-label">Jabatan</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="text" id="jabatan" placeholder="Jabatan" disabled/>
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="grade" className="col-sm-2 col-form-label">Grade</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="text" id="grade" placeholder="Grade" disabled/>
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="date" className="col-sm-2 col-form-label">Date</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="date" id="date" />
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="proyeksi" className="col-sm-2 col-form-label">Proyeksi</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="text" id="proyeksi" placeholder="Jabatan Proyeksi"/>
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="jenjab" className="col-sm-2 col-form-label">Jenjang Jabatan</CFormLabel>
+              <CCol sm={5}>
+                <CFormSelect id="jenjab" className="mb-3">
+                  <option disabled>Pilih...</option>
+                  <CDropdownDivider />
+                </CFormSelect>              
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="fp" className="col-sm-2 col-form-label">Jenis Fit & Proper</CFormLabel>
+              <CCol sm={5}>
+                <CFormSelect id="fp" className="mb-3" >
+                  <option disabled>Pilih...</option>
+                  <CDropdownDivider />
+                  <option value="Regular">Reguler</option>
+                  <option value="Vicon">Vicon</option>
+                </CFormSelect>              
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="urjab" className="col-sm-2 col-form-label">Pilih Urjab</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="urjab" placeholder="Uraian Jabatan"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="ppt" className="col-sm-2 col-form-label">Upload PPT *.ppt/.pptx</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="file" id="ppt"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="doc" className="col-sm-2 col-form-label">Upload CV *.doc/.docx</CFormLabel>
+              <CCol sm={10}>
+                <CFormInput type="file" id="doc"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="wan1" className="col-sm-2 col-form-label">Penilaian pertama</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="wan1" placeholder="Masukkan Nilai disini"/>            
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="wan2" className="col-sm-2 col-form-label">Penilaian kedua</CFormLabel>
+              <CCol sm={5}>
+                <CFormInput type="text" id="wan2" placeholder="Masukkan Nilai disini"/>            
+              </CCol>
+            </CRow>
+            
+            <CRow className="mb-3">
+              <CCol sm={1}>
+                <CButton type="submit" color="primary" variant="" id="button-addon2" onClick={(e)=>submit(e)}>
+                  SAVE
+                </CButton>
+              </CCol>
+              <CCol>
+                <CButton type="button" color="secondary" variant="" id="button-addon2">
+                  BATAL
+                </CButton>
+              </CCol>
+            </CRow>
+            </CForm>
           </CCardBody>
         </CCard>
       </CCol>
@@ -392,4 +254,4 @@ const ChecksRadios = () => {
   )
 }
 
-export default ChecksRadios
+export default daftarFitProper
