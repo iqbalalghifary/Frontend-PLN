@@ -24,10 +24,6 @@ const Tooltips = React.lazy(() => import('./views/base/tooltips/Tooltips'))
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'))
 const ButtonGroups = React.lazy(() => import('./views/buttons/button-groups/ButtonGroups'))
 const Dropdowns = React.lazy(() => import('./views/buttons/dropdowns/Dropdowns'))
-<<<<<<< HEAD
-=======
-const TambahData = React.lazy(() => import('./views/buttons/tambah-data/TambahData'))
->>>>>>> c554f7f15849965fb0b813d496888917cd5a4531
 
 //Forms
 const ChecksRadios = React.lazy(() => import('./views/forms/checks-radios/ChecksRadios'))
@@ -80,10 +76,6 @@ const routes = [
   { path: '/buttons/buttons', name: 'Peserta', element: Buttons },
   { path: '/buttons/dropdowns', name: 'Dropdowns', element: Dropdowns },
   { path: '/buttons/button-groups', name: 'Penguji', element: ButtonGroups },
-<<<<<<< HEAD
-=======
-  { path: '/buttons/tambah-data', name: 'Tambah Data', elemen: TambahData},
->>>>>>> c554f7f15849965fb0b813d496888917cd5a4531
   { path: '/charts', name: 'Cari Fit & Proper', element: Charts },
   { path: '/forms', name: 'Fit & Proper', element: FormControl, exact: true },
   { path: '/forms/form-control', name: 'Form Control', element: FormControl },

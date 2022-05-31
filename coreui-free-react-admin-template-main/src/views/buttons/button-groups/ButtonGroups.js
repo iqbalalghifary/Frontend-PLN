@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import url from '../../../api';
 import axios from "axios";
-<<<<<<< HEAD
-=======
-//import TambahData from "./TambahData";
->>>>>>> c554f7f15849965fb0b813d496888917cd5a4531
+
 import {
   CAvatar,
   CButton,
@@ -68,25 +65,17 @@ const ButtonGroups = () => {
     };
     fetchData();
   }, []);
-<<<<<<< HEAD
 
-=======
-  //let navigate = useNavigate();
->>>>>>> c554f7f15849965fb0b813d496888917cd5a4531
   return (
     <>
       <CRow className="mb-3">
         <CCol>
-<<<<<<< HEAD
-        <CButton color="secondary" onClick={() => {navigate('/base/breadcrumbs')}}><CIcon icon={cilUserFollow}></CIcon>Tambah Data Penguji</CButton>
-=======
           <Link to={'/buttons/dropdowns'}>
             <CButton color="secondary">
               Tambah Data Penguji
             </CButton>
           </Link>
         {/* <CButton color="secondary" onClick={() => {navigate('./buttons/button-groups/TambahData')}}><CIcon icon={cilUserFollow}></CIcon>Tambah Data Penguji</CButton> */}
->>>>>>> c554f7f15849965fb0b813d496888917cd5a4531
         </CCol> 
       </CRow>
       <CRow>
