@@ -137,7 +137,13 @@ const Breadcrumbs = () => {
                 </CRow></>
             ))}
             <CRow>
-            <CButton style={{width:120, alignSelf:"center"}}  onClick={() => submit()}>Tambah</CButton>
+            <CCol style={{width:250}}>
+            </CCol>
+              <CCol>
+            <CButton style={{width:120, alignSelf:"right"}}  onClick={() => submit()}>Tambah</CButton>
+            </CCol>
+            <CCol style={{width:400}}>
+            </CCol>
             </CRow>
             <CRow>
       <CCol xs>

@@ -72,6 +72,7 @@ const ButtonGroups = () => {
         <CCol>
           <Link to={'/buttons/dropdowns'}>
             <CButton color="secondary">
+            <CIcon icon={cilUserFollow}></CIcon>
               Tambah Data Penguji
             </CButton>
           </Link>
@@ -122,7 +123,14 @@ const ButtonGroups = () => {
                       <div>{item.attributes.pegawai.data.attributes.jenjang.data.attributes.nama_jenjang}</div>
                       </CTableDataCell>
                       <CTableDataCell>
+                      <Link to={{
+                        pathname:`/base/cards/${item.attributes.pegawai.data.attributes.nip}`,
+                        state: {nip:item.attributes.pegawai.data.attributes.nip }
+                      }}>
+                      <CButton color="#ffffff">
                       <CIcon icon={cilPen}></CIcon>
+                      </CButton>
+                      </Link>
                       </CTableDataCell>
                     </CTableRow>
                   ))}

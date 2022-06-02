@@ -42,6 +42,7 @@ import {
   // cibTwitter,
   // cilCloudDownload,
   cilPeople,
+  cilArrowLeft,
   // cilUser,
   // cilUserFemale,
   cilUserFollow,
@@ -68,14 +69,21 @@ const Buttons = ({navigation}) => {
      <CRow className="mb-3">
         <CCol>
           <Link to='/base/breadcrumbs'>
-        <CButton color="secondary"><CIcon icon={cilUserFollow}></CIcon>Tambah Data Peserta</CButton>
+        {
+         <CButton style={{width:120}} className='m-3'>
+         <CIcon icon={cilArrowLeft}></CIcon> Kembali</CButton> }
+
+                {/* <CButton style={{width:120}} color="secondary" className='m-3'>
+                <CIcon icon={cilArrowLeft}></CIcon> Kembali
+                </CButton> */}
+
         </Link>
         </CCol> 
       </CRow>
     <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Data Penguji</CCardHeader>
+            <CCardHeader>Report Penilaian Peserta Fit Proper</CCardHeader>
             <CCardBody>
               <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead color="light">
@@ -118,7 +126,7 @@ const Buttons = ({navigation}) => {
                       </CTableDataCell>
                       <CTableDataCell>
                       <Link to={{
-                        pathname:`/base/cards/${item.attributes.pegawai.data.attributes.nip}`,
+                        pathname:"/base/cards",
                         state: {nip:item.attributes.pegawai.data.attributes.nip }
                       }}>
                       <CButton color="#ffffff">

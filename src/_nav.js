@@ -41,6 +41,11 @@ const _nav = [
         name: "Penguji",
         to: "/buttons/button-groups",
       },
+      {
+        component: CNavItem,
+        name: "Pegawai",
+        to: "/buttons/pegawai",
+      },
     ],
   },
   {
@@ -51,12 +56,12 @@ const _nav = [
       {
         component: CNavItem,
         name: "Pendaftaran Fit & Proper",
-        to: "/forms/input-group",
+        to: "/forms/PendaftaranFP",
       },
       {
         component: CNavItem,
         name: "Pendaftaran Wawancara",
-        to: "/forms/select",
+        to: "/forms/PendaftaranWwc",
       },
       {
         component: CNavItem,
@@ -66,7 +71,7 @@ const _nav = [
       {
         component: CNavItem,
         name: "Penilaian Wawancara",
-        to: "/forms/range",
+        to: "/forms/penilaianWawancara",
       },
       
     ],
@@ -90,7 +95,7 @@ const _nav = [
       {
         component: CNavItem,
         name: "Cetak Nilai Fit & Proper",
-        to: "/forms/cetak-nilai-fit-proper",
+        to: "/views/forms/ReportCetakFitProper",
       },
       {
         component: CNavItem,
@@ -114,7 +119,7 @@ const _nav = [
   {
     component: CNavItem,
     name: "Administrasi User",
-    to: "/adminsitrasi-user",
+    to: "/buttons/adminsitrasiUsers",
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
   // {

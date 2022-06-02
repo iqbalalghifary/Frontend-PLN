@@ -1,59 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import url from '../../../api'
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
-  CDropdown,
-  CDropdownMenu,
-  CDropdownToggle,
-  CDropdownItem,
-  CAvatar,
   CButton,
-  CButtonGroup,
   CCard,
   CCardBody,
-  CCardFooter,
   CCardHeader,
   CCol,
   CFormInput,
   CInputGroup,
   CFormLabel,
-  CProgress,
   CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
 } from '@coreui/react'
-import { CChartLine, CChartPie } from '@coreui/react-chartjs'
-import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
 import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-  cilCalendar,
   cilArrowLeft,
-  cilText,
 } from '@coreui/icons'
 
 const Dropdowns = () => {
@@ -134,8 +96,15 @@ const Dropdowns = () => {
                   </CCol>
                 </CRow></>
             ))}
+            
             <CRow>
+            <CCol style={{width:400}}>
+            </CCol>
+            <CCol>
             <CButton style={{width:120, alignSelf:"center"}}  onClick={() => submit()}>Tambah</CButton>
+            </CCol>
+            <CCol style={{width:400}}>
+            </CCol>
             </CRow>
             <CRow>
       <CCol xs>

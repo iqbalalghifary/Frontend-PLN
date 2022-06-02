@@ -138,4 +138,4 @@ const Buttons = ({navigation}) => {
   );
 };
 
-export default Buttons;
+export default ReportCetakFitProper;
