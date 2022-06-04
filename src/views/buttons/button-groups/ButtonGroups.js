@@ -47,6 +47,7 @@ import {
   // cilUserFemale,
   cilUserFollow,
   cilPen,
+  cilTrash
 } from "@coreui/icons";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -56,15 +57,16 @@ const ButtonGroups = () => {
   const [penguji, setPenguji] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
+   const fetchData = async () => {
       const result = await axios.get(`${url}/api/pengujis?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade&populate[pegawai][populate][2]=jenjang`);
       console.log(result.data.data);
       const arr = result.data.data;
       setPenguji(arr);
     };
+  useEffect(() => {
+ 
     fetchData();
-  }, []);
+  },[]);
 
   return (
     <>
@@ -98,7 +100,7 @@ const ButtonGroups = () => {
                       Grade
                     </CTableHeaderCell>
                     <CTableHeaderCell>Jenjang</CTableHeaderCell>
-                    <CTableHeaderCell>Edit</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Edit</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -131,6 +133,9 @@ const ButtonGroups = () => {
                       <CIcon icon={cilPen}></CIcon>
                       </CButton>
                       </Link>
+                      <CButton color="#ff0000" onClick={(async ()=>{ await axios.delete(`${url}/api/pengujis/${item.id}`) &fetchData() & alert("delete berhasil")})}>
+                      <CIcon icon={cilTrash}></CIcon>
+                      </CButton>
                       </CTableDataCell>
                     </CTableRow>
                   ))}

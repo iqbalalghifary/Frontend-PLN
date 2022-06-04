@@ -46,6 +46,7 @@ import {
   // cilUserFemale,
   cilUserFollow,
   cilPen,
+  cilTrash
 } from "@coreui/icons";
 import { Route, useNavigate, Link, NavigationType } from "react-router-dom";
 
@@ -53,15 +54,16 @@ const Buttons = ({navigation}) => {
   const [peserta, setPeserta] = useState([]);
   const navigate = useNavigate();
 
+  const fetchData = async () => {
+    const result = await axios.get(`${url}/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade&populate[pegawai][populate][2]=jenjang`);
+    console.log(result.data.data);
+    const arr = result.data.data;
+    setPeserta(arr);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get(`${url}/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade&populate[pegawai][populate][2]=jenjang`);
-      console.log(result.data.data);
-      const arr = result.data.data;
-      setPeserta(arr);
-    };
     fetchData();
-  }, []);
+  },[]);
 
   return (
     <>
@@ -92,7 +94,7 @@ const Buttons = ({navigation}) => {
                       Grade
                     </CTableHeaderCell>
                     <CTableHeaderCell>Jenjang</CTableHeaderCell>
-                    <CTableHeaderCell>Edit</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Edit</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -116,7 +118,7 @@ const Buttons = ({navigation}) => {
                       <CTableDataCell>
                       <div>{item.attributes.pegawai.data.attributes.jenjang.data.attributes.nama_jenjang}</div>
                       </CTableDataCell>
-                      <CTableDataCell>
+                      <CTableDataCell className="align-middle">
                       <Link to={{
                         pathname:`/base/cards/${item.attributes.pegawai.data.attributes.nip}`,
                         state: {nip:item.attributes.pegawai.data.attributes.nip }
@@ -125,6 +127,9 @@ const Buttons = ({navigation}) => {
                       <CIcon icon={cilPen}></CIcon>
                       </CButton>
                       </Link>
+                      <CButton color="#ff0000" onClick={(async ()=>{ await axios.delete(`${url}/api/pesertas/${item.id}`) &fetchData() & alert("delete berhasil")})}>
+                      <CIcon icon={cilTrash}></CIcon>
+                      </CButton>
                       </CTableDataCell>
                     </CTableRow>
                   ))}

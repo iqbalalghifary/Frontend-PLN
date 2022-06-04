@@ -46,53 +46,39 @@ import {
   // cilUserFemale,
   cilUserFollow,
   cilPen,
+  cilTrash
 } from "@coreui/icons";
 import { Route, useNavigate, Link, NavigationType } from "react-router-dom";
 
-const Buttons = ({navigation}) => {
+const ReportCetakFitProper = ({navigation}) => {
   const [peserta, setPeserta] = useState([]);
   const navigate = useNavigate();
 
+  const fetchData = async () => {
+    const result = await axios.get(`${url}/api/pendaftars`);
+    console.log(result.data.data);
+    const arr = result.data.data;
+    setPeserta(arr);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get(`${url}/api/pesertas?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade&populate[pegawai][populate][2]=jenjang`);
-      console.log(result.data.data);
-      const arr = result.data.data;
-      setPeserta(arr);
-    };
     fetchData();
-  }, []);
+  },[]);
 
   return (
     <>
-     <CRow className="mb-3">
-        <CCol>
-          <Link to='/base/breadcrumbs'>
-        <CButton color="secondary"><CIcon icon={cilUserFollow}></CIcon>Tambah Data Peserta</CButton>
-        </Link>
-        </CCol> 
-      </CRow>
     <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Data Penguji</CCardHeader>
+            <CCardHeader>Report Nilai Peserta Fit Proper</CCardHeader>
             <CCardBody>
               <CTable align="middle" className="mb-0 border" hover responsive>
                 <CTableHead color="light">
                   <CTableRow>
-                    <CTableHeaderCell className="text-center">
-                      No
-                    </CTableHeaderCell>
-                    <CTableHeaderCell>Nama</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">
-                      NIP
-                    </CTableHeaderCell>
-                    <CTableHeaderCell>Jabatan</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">
-                      Grade
-                    </CTableHeaderCell>
-                    <CTableHeaderCell>Jenjang</CTableHeaderCell>
-                    <CTableHeaderCell>Edit</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">No</CTableHeaderCell>
+                    <CTableHeaderCell>Tanggal</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Proyeksi Jabatan</CTableHeaderCell>
+                    <CTableHeaderCell>Lihat</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -102,29 +88,22 @@ const Buttons = ({navigation}) => {
                       <div>{index+1}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                      <div>{item.attributes.pegawai.data.attributes.nama}</div>
+                      <div>{item.attributes.tangal}</div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                      <div>{item.attributes.pegawai.data.attributes.nip}</div>
+                      <div>{item.attributes.proyeksi_jabatan}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                      <div>{item.attributes.pegawai.data.attributes.jabatan.data.attributes.nama_jabatan}</div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                      <div>{item.attributes.pegawai.data.attributes.grade.data.attributes.nama_grade}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                      <div>{item.attributes.pegawai.data.attributes.jenjang.data.attributes.nama_jenjang}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
+                      
                       <Link to={{
-                        pathname:`/base/cards/${item.attributes.pegawai.data.attributes.nip}`,
-                        state: {nip:item.attributes.pegawai.data.attributes.nip }
                       }}>
-                      <CButton color="#ffffff">
-                      <CIcon icon={cilPen}></CIcon>
-                      </CButton>
-                      </Link>
+                      <CButton color="info">
+                          Lihat Nilai
+                        </CButton>
+                          </Link>
+                          {/* <CButton color="#ff0000" onClick={(async ()=>{ await axios.delete(`${url}/api/pesertas/${item.id}`) &fetchData() & alert("delete berhasil")})}>
+                          
+                      </CButton> */}
                       </CTableDataCell>
                     </CTableRow>
                   ))}

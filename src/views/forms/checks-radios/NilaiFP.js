@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import url from '../../../api'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -23,17 +23,34 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CTable,
+  CTableBody,
+  CTableHead,
+  CTableRow,
+  CTableDataCell,
+  CTableHeaderCell
 } from '@coreui/react'
 import { DocsCallout, DocsExample } from 'src/components'
 
 const nilaiFP = () => {
-const {nip} = useParams()
-console.log(nip);
-const [pendaftar, setPendaftar] = useState([])
-const readPendaftar = () => 
-axios.get(
-  `${url}/api/pendaftars?populate[peserta][populate]=pegawai&populate[pengujis][populate]=pegawai&populate=penilaians`)
-  
+
+  //const [penguji, setPenguji] = useState([]);
+  const navigate = useNavigate();
+
+  // const fetchData1 = async () => {
+  //   const result = await axios.get(`${url}/api/pengujis?populate[pegawai][fields][0]=nama&populate[pegawai][fields][1]=nip&populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade&populate[pegawai][populate][2]=jenjang`);
+  //   console.log(result.data.data);
+  //   const arr = result.data.data;
+  //   setPenguji(arr);
+  // };
+
+  const {nip} = useParams()
+  console.log(nip);
+  const [pendaftar, setPendaftar] = useState([])
+  const readPendaftar = () => 
+  axios.get(
+    `${url}/api/pendaftars?populate[peserta][populate]=pegawai`)
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await readPendaftar();
@@ -44,6 +61,12 @@ axios.get(
     fetchData();
   }, []);
 
+  const idx = pendaftar.findIndex(x => 
+    x.attributes.peserta.data.attributes.pegawai.data.attributes.nip === document.getElementById("nip").value)
+  console.log(idx)
+  //const nama = pendaftar[idx].attributes.peserta.data.attributes.pegawai.data.attributes.nama
+  console.log(pendaftar[idx].attributes.tangal)
+  // console.log(pendaftar.attributes.peserta.data.attributes.pegawai.data.attributes.nama)
   return (
     <CRow>
       <CCol xs={12}>
@@ -51,7 +74,9 @@ axios.get(
           <CCardHeader>
             <CRow className="mb-3">
                 <CCol sm={4}>
-                    <CFormInput type="text" id="nama" placeholder="Nama" disabled/>
+                    <CFormInput type="text" id="nama" placeholder="Nama" 
+                    //value = {nama} 
+                    disabled/>
                 </CCol>
                 <CCol sm={3}>
                     <CFormInput type="text" id="nip" placeholder="NIP" value={nip} disabled/>
@@ -62,141 +87,81 @@ axios.get(
             </CRow>
           </CCardHeader>
           <CCardBody>
-          {/* <p id="demo"></p>
-          <CForm
-                // onSubmit={submitHandler}
-                // method="post"
-                // encType="multipart/form-data"
-                // className="form-horizontal"
-              >
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="nip" className="col-sm-2 col-form-label">NIP</CFormLabel>
-              <CCol sm={5}>
-                <CFormInput type="text" id="nip" placeholder="NIP" 
-            //       value={nip}
-            //       onChange={(e) => {
-            //       setNIP(e.target.value);
-            //       console.log(nip)
-            //   }}
-            />
-              </CCol>
-              <CCol>
-                <CButton type="submit" color="warning" variant="outline" id="cek" onClick={() => dataPeserta()}>
-                  CEK
-                </CButton>
-              </CCol>
-            </CRow>
-            
-            <CRow className="mb-3">
-            <CFormLabel htmlFor="nama" className="col-sm-2 col-form-label">Nama</CFormLabel>
-            <CCol sm={10}>
-              <CFormInput type="text" id="nama" placeholder="Nama" disabled/>
-            </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="jabatan" className="col-sm-2 col-form-label">Jabatan</CFormLabel>
-              <CCol sm={10}>
-                <CFormInput type="text" id="jabatan" placeholder="Jabatan" disabled/>
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="grade" className="col-sm-2 col-form-label">Grade</CFormLabel>
-              <CCol sm={10}>
-                <CFormInput type="text" id="grade" placeholder="Grade" disabled/>
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="date" className="col-sm-2 col-form-label">Date</CFormLabel>
-              <CCol sm={5}>
-                <CFormInput type="date" id="date" />
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="proyeksi" className="col-sm-2 col-form-label">Proyeksi</CFormLabel>
-              <CCol sm={10}>
-                <CFormInput type="text" id="proyeksi" placeholder="Jabatan Proyeksi"/>
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="jenjab" className="col-sm-2 col-form-label">Jenjang Jabatan</CFormLabel>
-              <CCol sm={5}>
-                <CFormSelect id="jenjab" className="mb-3">
-                  <option defaultChecked>Pilih...</option>
-                  <CDropdownDivider />
-                </CFormSelect>              
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="fp" className="col-sm-2 col-form-label">Jenis Fit & Proper</CFormLabel>
-              <CCol sm={5}>
-                <CFormSelect id="fp" className="mb-3" >
-                  <option defaultChecked>Pilih...</option>
-                  <CDropdownDivider />
-                  <option value="Regular">Reguler</option>
-                  <option value="Vicon">Vicon</option>
-                </CFormSelect>              
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="urjab" className="col-sm-2 col-form-label">Pilih Urjab</CFormLabel>
-              <CCol sm={5}>
-                <CFormInput type="text" id="urjab" placeholder="Uraian Jabatan"/>            
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="ppt" className="col-sm-2 col-form-label">Upload PPT *.ppt/.pptx</CFormLabel>
-              <CCol sm={10}>
-                <CFormInput type="file" id="ppt" onChange={handleFilePPT}/>            
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="doc" className="col-sm-2 col-form-label">Upload CV *.doc/.docx</CFormLabel>
-              <CCol sm={10}>
-              <CFormInput type="file" id="doc" onChange={handleFileCV}/>            
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="wan1" className="col-sm-2 col-form-label">Pewawancara 1</CFormLabel>
-              <CCol sm={5}>
-                <CFormSelect id="wan1" className="mb-3">
-                  <option defaultChecked> </option>
-                  <CDropdownDivider />
-                </CFormSelect>          
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="wan2" className="col-sm-2 col-form-label">Pewawancara 2</CFormLabel>
-              <CCol sm={5}>
-                <CFormSelect id="wan2" className="mb-3">
-                  <option defaultChecked> </option>
-                  <CDropdownDivider />
-                </CFormSelect> 
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="wan3" className="col-sm-2 col-form-label">Pewawancara 3</CFormLabel>
-              <CCol sm={5}>
-                <CFormSelect id="wan3" className="mb-3">
-                  <option defaultChecked> </option>
-                  <CDropdownDivider />
-                </CFormSelect>             
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
-              <CCol sm={1}>
-                <Link to="/forms/pendaftaranFP" >
-                <CButton type="submit" color="primary" variant="" id="button-addon2" onClick={(e)=>submit(e) & pindah("/forms/pendaftaranFP")}>
-                  SAVE
-                </CButton>
-                </Link>
-              </CCol>
-              <CCol>
-                <CButton type="button" color="secondary" variant="" id="button-addon2">
-                  BATAL
-                </CButton>
-              </CCol>
-            </CRow>
-            </CForm> */}
+          <CTable className="text-center border border-2" hover responsive>
+         <CTableHead color='light' className=' border border-2 text-center'>
+           <CTableRow className=' border border-2'>
+             <CTableHeaderCell className=' border border-2'>No</CTableHeaderCell>
+             <CTableHeaderCell className=' border border-2'>Tim Penilai</CTableHeaderCell>
+             <CTableHeaderCell className=' border border-2' colspan="6">
+               key kompetensis 1
+               <CRow>
+                 <CCol>1</CCol>
+                 <CCol>2</CCol>
+                 <CCol>3</CCol>
+                 <CCol>4</CCol>
+                 <CCol>5</CCol>
+                 <CCol>6</CCol>
+               </CRow>
+             </CTableHeaderCell>
+             <CTableHeaderCell className=' border border-2' colspan="4">
+              key kompetensis 2
+               <CRow >
+               <CCol>1</CCol>
+               <CCol>2</CCol>
+               <CCol>3</CCol>
+               <CCol>4</CCol>
+               </CRow>
+            </CTableHeaderCell>
+             <CTableHeaderCell className=' border border-2' colspan="4">
+               key kompetensis 3
+               <CRow className="text-center">
+               <CCol>1</CCol>
+               <CCol>2</CCol>
+               <CCol>3</CCol>
+               <CCol>4</CCol>
+               </CRow>
+            </CTableHeaderCell>
+             </CTableRow>
+         </CTableHead>
+         
+         <CTableBody>
+         {/* {penguji.map((item,index) => (
+                    <CTableRow v-for="item in tableItems">
+                     <CTableDataCell className="text-center">
+                      <div>{index+1}</div>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                      <div>{item.attributes.pegawai.data.attributes.nama}</div>
+                      </CTableDataCell>
+                      <CTableDataCell className="text-center">
+                      <div>{item.attributes.pegawai.data.attributes.nip}</div>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                      <div>{item.attributes.pegawai.data.attributes.jabatan.data.attributes.nama_jabatan}</div>
+                      </CTableDataCell>
+                      <CTableDataCell className="text-center">
+                      <div>{item.attributes.pegawai.data.attributes.grade.data.attributes.nama_grade}</div>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                      <div>{item.attributes.pegawai.data.attributes.jenjang.data.attributes.nama_jenjang}</div>
+                      </CTableDataCell> */}
+                      {/* <CTableDataCell>
+                      <Link to={{
+                        pathname:`/base/cards/${item.attributes.pegawai.data.attributes.nip}`,
+                        state: {nip:item.attributes.pegawai.data.attributes.nip }
+                      }}>
+                      <CButton color="#ffffff">
+                      <CIcon icon={cilPen}></CIcon>
+                      </CButton>
+                      </Link>
+                      <CButton color="#ff0000" onClick={(async ()=>{ await axios.delete(`${url}/api/pengujis/${item.id}`) &fetchData() & alert("delete berhasil")})}>
+                      <CIcon icon={cilTrash}></CIcon>
+                      </CButton>
+                      </CTableDataCell> */}
+                    {/* </CTableRow>
+                  ))} */}
+         </CTableBody>
+         </CTable>
           </CCardBody>
         </CCard>
       </CCol>

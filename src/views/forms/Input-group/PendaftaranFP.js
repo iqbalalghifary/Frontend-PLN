@@ -29,7 +29,7 @@ const DaftarFP = () => {
     const [pendaftar, setPendaftar] = useState([])
     const readPendaftar = () => 
     axios.get(
-      `${url}/api/pendaftars?populate[peserta][populate]=pegawai&populate[pengujis][populate]=pegawai&populate=penilaians`)
+      `${url}/api/pendaftars?populate[peserta][populate]=pegawai&populate[pengujis][populate]=pegawai&populate=penilaian`)
   
     useEffect(() => {
       const fetchData = async () => {

@@ -33,6 +33,13 @@ const daftarWawancara = () => {
   const [nip, setNIP] = useState("")
   const [selectedFile, setSelectedFile] = useState("")
   const [selectedFile2, setSelectedFile2] = useState("")
+  const [jabatan, setJabatan] = useState([])
+
+  const dataJabatan = async () => {
+    const data = await axios.get(`${url}/api/jabatans`)
+    setJabatan(data.data.data);
+  }
+
   const readPeserta = () => 
     axios.get(
       `${url}/api/pesertas?populate[pegawai][populate][0]=jabatan&populate[pegawai][populate][1]=grade`)
@@ -58,6 +65,7 @@ const daftarWawancara = () => {
      setGrade(arr2);
     };
     fetchData();
+    dataJabatan();
   }, []);
 
   useEffect(() => {

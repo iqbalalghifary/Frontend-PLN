@@ -60,7 +60,7 @@ const penilaianFitProper = () => {
                     <th className="text-center">Nilai</th>
                   </tr>
                 </CTableHead>
-                <CTableBody>
+                <CTableBody  className="mb-0 border-1">
                   {pendaftar.map((item,index) => (
                     <tr v-for="item in tableItems">
                      <td className="text-center">

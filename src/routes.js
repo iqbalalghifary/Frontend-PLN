@@ -42,6 +42,7 @@ const Validation = React.lazy(() => import('./views/forms/validation/Validation'
 const rekapnilaifitproper = React.lazy(() => import('./views/forms/rekap-nilai-fit-proper/rekapnilaifitproper'))
 const Charts = React.lazy(() => import('./views/charts/Charts'))
 const ReportCetakFitProper = React.lazy(() => import('./views/forms/ReportCetakFitProper/ReportCetakFitProper'))
+const RekapManual = React.lazy(() => import('./views/forms/rekap-manual-fit-proper/rekapmanualfitproper'))
 
 // Icons
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
@@ -90,7 +91,7 @@ const routes = [
   { path: '/forms/select', name: 'Form Pendaftaran Wawancara', element: Select },
   { path: '/forms/pendaftaranWWC', name: 'Pendaftaran Wawancara', element: PendaftaranWwc },
   { path: '/forms/checks-radios', name: 'Penilaian Fit & Proper', element: ChecksRadios },
-  { path: '/forms/nilaiFP', name: 'Penilaian Fit & Proper', element: NilaiFP },
+  { path: '/forms/nilaiFP/:nip', name: 'Penilaian Fit & Proper', element: NilaiFP },
   { path: '/forms/penilaianWawancara', name: 'Penilaian Wawancara', element: PenilaianWwc },
   { path: '/forms/range', name: 'Penilaian Wawancara  ', element: Range },
   { path: '/forms/input-group', name: 'Form Pendaftaran Fit & Proper', element: InputGroup },
@@ -110,6 +111,7 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', element: Modals },
   { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   { path: '/widgets', name: 'Widgets', element: Widgets },
+  {path: '/rekap-manual-fit-proper', name: 'Rekap Manual Fit Proper', element: RekapManual }
 ]
 
 export default routes

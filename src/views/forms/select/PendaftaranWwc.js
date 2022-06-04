@@ -139,8 +139,8 @@ const DaftarWWC = () => {
                         <CButton color="#ffffff">
                           <CIcon icon={cilPeople} 
                             title=
-                            {item.attributes.pengujis.data[0].attributes.pegawai.data.attributes.nama + ", " 
-                            + item.attributes.pengujis.data[1].attributes.pegawai.data.attributes.nama}></CIcon>
+                            {item.attributes.pengujis.data[0].attributes.pegawai.data.attributes.nama + "," }
+                            ></CIcon>
                         </CButton> 
                       </td>
                       <td align="center">

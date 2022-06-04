@@ -90,12 +90,12 @@ const _nav = [
       {
         component: CNavItem,
         name: "Rekap Manual Nilai Fit & Proper",
-        to: "/forms/rekap-manual-fit-proper",
+        to: "/rekap-manual-fit-proper",
       },
       {
         component: CNavItem,
         name: "Cetak Nilai Fit & Proper",
-        to: "/views/forms/ReportCetakFitProper",
+        to: '/forms/ReportCetakFitProper',
       },
       {
         component: CNavItem,

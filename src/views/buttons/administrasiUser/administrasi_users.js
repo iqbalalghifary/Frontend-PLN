@@ -72,7 +72,9 @@ const administrasi_users = () => {
                       </CTableDataCell>
                       <CTableDataCell>
                           <div>{item.attributes.pegawai.data.attributes.edit_hak_akses}</div>
-                          <CIcon icon={cilPen}></CIcon>
+                          <CButton color="Primary">
+                          Edit Hak Akses
+                        </CButton>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                           <div>{item.attributes.pegawai.data.attributes.nip}</div>
