@@ -47,9 +47,12 @@ const nilaiFP = () => {
   const {nip} = useParams()
   console.log(nip);
   const [pendaftar, setPendaftar] = useState([])
+  const [nama, setNama] = useState("")
+  const [tanggal, setTanggal] = useState("")
+  const [angka, setAngka] = useState([]);
   const readPendaftar = () => 
   axios.get(
-    `${url}/api/pendaftars?populate[peserta][populate]=pegawai`)
+    `${url}/api/pendaftars?populate[peserta][populate]=pegawai&populate[pengujis][populate]=pegawai`)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,23 +62,46 @@ const nilaiFP = () => {
       setPendaftar(arr);
     };
     fetchData();
+    nilai();
   }, []);
 
-  const idx = pendaftar.findIndex(x => 
-    x.attributes.peserta.data.attributes.pegawai.data.attributes.nip === document.getElementById("nip").value)
-  console.log(idx)
-  //const nama = pendaftar[idx].attributes.peserta.data.attributes.pegawai.data.attributes.nama
-  console.log(pendaftar[idx].attributes.tangal)
-  // console.log(pendaftar.attributes.peserta.data.attributes.pegawai.data.attributes.nama)
+  const nilai = () => {
+    let i = 5;
+    let nilai =[0];
+    while (i<=100) {
+      nilai = nilai.concat(i);
+      i = i+5;
+    }
+    setAngka(nilai);
+  }
+  
+  const identitas = () => {
+    const idx = pendaftar.findIndex(x => 
+      x.attributes.peserta.data.attributes.pegawai.data.attributes.nip === document.getElementById("nip").value)
+    //console.log(idx)
+    // setNama(pendaftar[idx].attributes.peserta.data.attributes.pegawai.data.attributes.nama)
+    // setTanggal(pendaftar[idx].attributes.tangal)
+  }
+    console.log(idx)
+    console.log(nama)
+    console.log(tanggal)
+  //  pendaftar.findIndex(x => 
+  //   x.attributes.peserta.data.attributes.pegawai.data.attributes.nip === document.getElementById("nip").value)
+  // console.log(idx)
+  // document.getElementById("tanggal").value=pendaftar[idx].attributes.tangal
+  // // let nama = pendaftar[idx].attributes.peserta.data.attributes.pegawai.data.attributes.nama
+  // console.log(pendaftar[idx].attributes.tangal)
+  // // console.log(pendaftar.attributes.peserta.data.attributes.pegawai.data.attributes.nama)
+  
+
   return (
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">  
           <CCardHeader>
-            <CRow className="mb-3">
+            <CRow className="mb-3" >
                 <CCol sm={4}>
-                    <CFormInput type="text" id="nama" placeholder="Nama" 
-                    //value = {nama} 
+                    <CFormInput type="text" id="nama" placeholder="Nama"
                     disabled/>
                 </CCol>
                 <CCol sm={3}>
@@ -87,79 +113,194 @@ const nilaiFP = () => {
             </CRow>
           </CCardHeader>
           <CCardBody>
-          <CTable className="text-center border border-2" hover responsive>
-         <CTableHead color='light' className=' border border-2 text-center'>
-           <CTableRow className=' border border-2'>
-             <CTableHeaderCell className=' border border-2'>No</CTableHeaderCell>
-             <CTableHeaderCell className=' border border-2'>Tim Penilai</CTableHeaderCell>
-             <CTableHeaderCell className=' border border-2' colspan="6">
-               key kompetensis 1
-               <CRow>
-                 <CCol>1</CCol>
-                 <CCol>2</CCol>
-                 <CCol>3</CCol>
-                 <CCol>4</CCol>
-                 <CCol>5</CCol>
-                 <CCol>6</CCol>
-               </CRow>
-             </CTableHeaderCell>
-             <CTableHeaderCell className=' border border-2' colspan="4">
-              key kompetensis 2
-               <CRow >
-               <CCol>1</CCol>
-               <CCol>2</CCol>
-               <CCol>3</CCol>
-               <CCol>4</CCol>
-               </CRow>
-            </CTableHeaderCell>
-             <CTableHeaderCell className=' border border-2' colspan="4">
-               key kompetensis 3
-               <CRow className="text-center">
-               <CCol>1</CCol>
-               <CCol>2</CCol>
-               <CCol>3</CCol>
-               <CCol>4</CCol>
-               </CRow>
-            </CTableHeaderCell>
-             </CTableRow>
+          <CRow className="mb-3" >
+          <CFormLabel className="col-sm-1 col-form-label">Penguji: </CFormLabel>
+              <CCol sm={3}>
+                <CFormInput type="text" id="nip" placeholder="NIP Penguji"/>
+              </CCol>
+              
+            </CRow>
+          <CTable className="border border-2 bordered" hover responsive>
+          <CTableHead color='light' className=' border border-2 text-center'>
+            <CTableRow >
+              <CTableHeaderCell className=' border border-2' rowSpan={2} >No</CTableHeaderCell>
+              <CTableHeaderCell className=' border border-2'colSpan={4}>Tabel Penilaian</CTableHeaderCell>
+            </CTableRow>
+            <CTableRow>
+            <CTableHeaderCell className=' border border-2'>Key Factor</CTableHeaderCell>
+            <CTableHeaderCell className=' border border-2'>Aspek Penilaian</CTableHeaderCell>
+            <CTableHeaderCell className=' border border-2'>Uraian Penilaian</CTableHeaderCell>
+            <CTableHeaderCell className=' border border-2'>Nilai</CTableHeaderCell>
+            </CTableRow>
          </CTableHead>
          
-         <CTableBody>
-         {/* {penguji.map((item,index) => (
-                    <CTableRow v-for="item in tableItems">
-                     <CTableDataCell className="text-center">
-                      <div>{index+1}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                      <div>{item.attributes.pegawai.data.attributes.nama}</div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                      <div>{item.attributes.pegawai.data.attributes.nip}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                      <div>{item.attributes.pegawai.data.attributes.jabatan.data.attributes.nama_jabatan}</div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                      <div>{item.attributes.pegawai.data.attributes.grade.data.attributes.nama_grade}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                      <div>{item.attributes.pegawai.data.attributes.jenjang.data.attributes.nama_jenjang}</div>
-                      </CTableDataCell> */}
-                      {/* <CTableDataCell>
-                      <Link to={{
-                        pathname:`/base/cards/${item.attributes.pegawai.data.attributes.nip}`,
-                        state: {nip:item.attributes.pegawai.data.attributes.nip }
-                      }}>
-                      <CButton color="#ffffff">
-                      <CIcon icon={cilPen}></CIcon>
-                      </CButton>
-                      </Link>
-                      <CButton color="#ff0000" onClick={(async ()=>{ await axios.delete(`${url}/api/pengujis/${item.id}`) &fetchData() & alert("delete berhasil")})}>
-                      <CIcon icon={cilTrash}></CIcon>
-                      </CButton>
-                      </CTableDataCell> */}
-                    {/* </CTableRow>
-                  ))} */}
+         <CTableBody className=' border border-2'>
+           <CTableRow>
+            <CTableDataCell className=' border border-2 text-center'rowSpan={12}>1</CTableDataCell>
+            <CTableDataCell className=' border border-2' rowSpan={12}>Key Competencies</CTableDataCell>
+           </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2' rowSpan={3}>Personal Aspek</CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2' >Enthusiasthic for Challenge</CTableDataCell>
+              <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2'>Creative & Innovative</CTableDataCell>
+              <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2' rowSpan={2}>Interpersonel Skill</CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2'>Building Business Partnership</CTableDataCell>
+              <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2' rowSpan={4}>Managing the Business</CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2'>Business Acumen</CTableDataCell>
+              <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2'>Customer Focus Oriented</CTableDataCell>
+              <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2'>Driving Execution</CTableDataCell>
+              <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2'rowSpan={2}>Leaderships</CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableDataCell className=' border border-2'>Empowering / Developing Others</CTableDataCell>
+              <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+
+          <CTableRow>
+           <CTableDataCell className=' border border-2 text-center'rowSpan={7}>2</CTableDataCell>
+           <CTableDataCell className=' border border-2' rowSpan={7}>Proyeksi Jabatan</CTableDataCell>
+          </CTableRow>
+           <CTableRow>
+            <CTableDataCell className=' border border-2' rowSpan={4}>Technical Knowledge</CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+            <CTableDataCell className=' border border-2'>Aspek Pemasaran dan Niaga</CTableDataCell>
+            <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+            <CTableDataCell className=' border border-2'>Aspek Keteknisan</CTableDataCell>
+            <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+            <CTableDataCell className=' border border-2'>Aspek K3L</CTableDataCell>
+            <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+           <CTableRow>
+            <CTableDataCell className=' border border-2' rowSpan={2}>Strategy & breaktrough</CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+            <CTableDataCell className=' border border-2'>Kontribusi terhadap KPI di Kontrak</CTableDataCell>
+            <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+
+          <CTableRow>
+           <CTableDataCell className=' border border-2 text-center'rowSpan={4}>3</CTableDataCell>
+           <CTableDataCell className=' border border-2' rowSpan={4}>Personal Endurance</CTableDataCell>
+          </CTableRow>
+           <CTableRow>
+            <CTableDataCell className=' border border-2' rowSpan={3}>Tingkat Kesiapan Pribadi</CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+            <CTableDataCell className=' border border-2'>Internal Readiness (Personal Readiness)</CTableDataCell>
+            <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+            <CTableDataCell className=' border border-2'>Eksternal Readiness</CTableDataCell>
+            <CTableDataCell className=' border border-2'>
+                <CCol><CFormSelect id="penguji1" placeholder="Penguji 1">
+                {angka.map((item)=>{
+                  return(
+                   <option value={item}>{item}</option>)
+                })}
+                  </CFormSelect></CCol></CTableDataCell>
+            </CTableRow>
+
          </CTableBody>
          </CTable>
           </CCardBody>

@@ -11,6 +11,8 @@ import {
   CRow,
   CFormInput,
   CFormLabel,
+  CFormSelect,
+  CDropdownDivider 
 } from '@coreui/react'
 
 import { useParams } from 'react-router-dom'
@@ -36,6 +38,16 @@ function Cards(props){
   //   const response = await axios.put(`${url}/api/jabatan`, article);
   //   this.setState({ updatedAt: response.data.updatedAt });
   // }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result4 = await readJabatan();
+      const arr4 = result4.data.data;
+    console.log(arr4)
+     setJabatan(arr4);
+    };
+    fetchData();
+  }, []);
 
   const uri = `${url}/api/pegawais?filters[nip][$eq]=${type}&populate=*`
     
@@ -86,13 +98,19 @@ function Cards(props){
           </CRow><CRow className="mb-3">
                 <CFormLabel htmlFor="nama" className="col-sm-2 col-form-label">Nama</CFormLabel>
                 <CCol sm={10}>
-                  <CFormInput type="text" id='nama' placeholder="nama"  value={item.attributes.nama} />
+                  <CFormInput type="text" id='nama' placeholder={item.attributes.nama}  onChange={item.attributes.nama} />
                 </CCol>
               </CRow><CRow className="mb-3">
                   <CFormLabel htmlFor="jabatan" className="col-sm-2 col-form-label">Jabatan</CFormLabel>
-                  <CCol sm={10}>
-                    <CFormInput type="text" id="jabatan" placeholder="Jabatan" value={item.attributes.jabatan.data.attributes.nama_jabatan} />
-                  </CCol>
+                  <CFormSelect id="proyeksi" className="mb-3">
+                   <option defaultChecked>{item.attributes.jabatan.data.attributes.nama_jabatan}</option>
+                   {jabatan.map((item)=>{
+                     return(
+                     <option value={item.attributes.nama_jabatan}>{item.attributes.nama_jabatan}</option>
+                     )
+                  })}
+                   <CDropdownDivider />
+              </CFormSelect>               
                 </CRow><CRow className="mb-3">
                   <CFormLabel htmlFor="grade" className="col-sm-2 col-form-label">Grade</CFormLabel>
                   <CCol sm={10}>
